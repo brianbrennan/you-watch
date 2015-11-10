@@ -12,7 +12,7 @@ angular.module('videoCtrl', [])
 					console.log(res.items[0].snippet.channelTitle);
 					console.log($scope.settings.channel);
 					if(res.items[0].snippet.channelTitle === $scope.settings.channel){
-						s('.video').insert('<iframe width="800" height="450" src="http://www.youtube.com/embed/' + video_id + '?autoplay=1&showinfo=0" frameborder="0"></iframe>');
+						s('.video').insert('<iframe width="800" height="450" src="http://www.youtube.com/embed/' + video_id + '?autoplay=0&showinfo=0" frameborder="0"></iframe>');
 					} else {
 						$location.path('/404');
 					}
