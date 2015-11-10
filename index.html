@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>You Watch</title>
+	<link rel="stylesheet" href="components/styles.css">
+</head>
+<body ng-app="myApp" ng-controller="mainController as main">
+
+	<a ng-href="/#/">Home</a>
+	<a ng-href="/#/videos/">Videos</a>
+
+	<div ng-view></div>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-animate.js"></script>
+	<script src="components/lib/slimpickin/dist/slimpickin.min.js"></script>
+	<script src="app/app.min.js"></script>
+	<script src="components/script.js"></script>
+	<script src="//localhost:35729/livereload.js"></script>
+</body>
+</html>

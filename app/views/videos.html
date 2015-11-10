@@ -1,0 +1,8 @@
+<div class="videos">
+	<div class="video" ng-repeat="v in videos">
+		<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
+			<img src="{{v.snippet.thumbnails.default.url}}" alt="">
+			{{v.snippet.title}}
+		</a>
+	</div>
+</div>

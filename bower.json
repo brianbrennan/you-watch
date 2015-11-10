@@ -1,0 +1,20 @@
+{
+  "name": "you-watch",
+  "version": "0.8.0",
+  "moduleType": [
+    "node"
+  ],
+  "author": "Brian Brennan",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components/lib"
+  ],
+  "dependencies": {
+    "susy": "~2.2.2",
+    "breakpoint-sass": "~2.5.0",
+    "bourbon": "~4.2.2",
+    "slimpickin": "~0.8.2"
+  }
+}
