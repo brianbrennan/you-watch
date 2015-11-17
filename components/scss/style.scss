@@ -1,3 +1,18 @@
+@import '../lib/bourbon/app/assets/stylesheets/bourbon';
+@import '../lib/susy/sass/susy';
+@import '../lib/breakpoint-sass/stylesheets/breakpoint';
+@import 'reset';
+@import 'variables';
+
+
+
+
 body{
-	color:black;
+	color:$black;
+	font-family:$mainFont;
+}
+
+header{
+	width:100%;
+	background-color:$accent;
 }

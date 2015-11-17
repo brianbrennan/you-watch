@@ -1,0 +1,8 @@
+<div class="playlists">
+	<div class="playlists" ng-repeat="p in playlists">
+		<a ng-href="/#/playlists/{{p.id}}">
+			<img src="{{p.snippet.thumbnails.default.url}}" alt="">
+			{{p.snippet.title}}
+		</a>
+	</div>
+</div>

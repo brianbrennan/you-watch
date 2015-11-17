@@ -1,1 +1,1 @@
-var myApp = angular.module('myApp', ['videoServiceProvider', 'app.routes', 'mainCtrl', 'videosCtrl', 'videoCtrl']);
+var myApp = angular.module('myApp', ['videoServiceProvider', 'app.routes', 'mainCtrl', 'videosCtrl', 'videoCtrl', 'playlistsCtrl', 'playlistCtrl']);

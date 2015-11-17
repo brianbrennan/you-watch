@@ -17,6 +17,20 @@ route.config(function($routeProvider, $locationProvider){
 			controllerAs: 'video'
 		})
 
+		.when('/playlists/', {
+			templateUrl: 'app/views/playlists.html',
+			controller: 'playlistsController',
+			controllerAs: 'playlists'
+
+		})
+
+		.when('/playlists/:playlist_id', {
+			templateUrl: 'app/views/playlist.html',
+			controller: 'playlistController',
+			controllerAs: 'playlist'
+
+		})
+
 		.when('/404', {
 			templateUrl: 'app/views/404.html'
 		})
