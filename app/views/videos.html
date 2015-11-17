@@ -1,8 +1,15 @@
-<div class="videos">
-	<div class="video" ng-repeat="v in videos">
-		<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
-			<img src="{{v.snippet.thumbnails.default.url}}" alt="">
-			{{v.snippet.title}}
-		</a>
+<div class="videos page">
+	<div class="wrapper">
+		<h3>Recent Uploads</h3>
+		<div class="video-snippets">
+			<div class="video-snippet" ng-repeat="v in videos">
+				<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
+					<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
+					<p class="title">{{v.snippet.title}}</p>
+				</a>
+			</div>
+
+			<span class="show-hide">Show More</span>
+		</div>
 	</div>
 </div>

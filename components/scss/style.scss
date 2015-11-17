@@ -4,6 +4,14 @@
 @import 'reset';
 @import 'variables';
 
+$susy: (
+  columns: 12,
+  gutters: 1,
+  math: fluid,
+  output: float,
+  gutter-position: after
+);
+
 
 //--------------------------------------------Styles
 
@@ -63,6 +71,76 @@ header{
 	margin-top:$sm;
 }
 
+//------------------------Home Page Styling
+
+.home{
+
+}
+
+.hero{
+	height:60vh;
+}
+
+.recent-updates{
+	background-color:$white;
+	padding:$sm;
+	margin:$sm 0;
+	max-width:$largeColumnWidth;
+
+	h4{
+		color:$accentColor;
+	}
+
+	.post{
+		padding:$sm 0;
+
+		h2{
+			font-size:$medFontSize;
+			color:$secondaryColor;
+		}
+
+		.date{
+			margin-bottom:$sm;
+		}
+
+		.divide{
+			height:1px;
+			width:$xxl;
+			margin:$sm auto 0 auto;
+			background-color:$light-grey;
+		}
+	}
+}
+
+//------------------------Videos Page / Playlists Page
+
+.videos, .playlists{
+
+	.show-hide{
+		cursor:pointer;
+		color:$secondaryColor;
+		width:$xxl;
+		padding-top:$reg;
+		margin:auto;
+		margin-bottom:$reg;
+		display:block;
+		text-align:center;
+		clear:both;
+	}
+
+}
+
+.video-snippet, .playlist-snippet{
+	float:left;
+	margin-top:$sm;
+	@include span(4 of 12);
+	clear:right;
+
+	&:nth-child(3n){
+		@include last();
+	}
+}
+
 
 //------------------------Video Page
 
@@ -105,3 +183,20 @@ header{
 		text-align:center;
 	}
 }
+
+
+//--------------------------Comments Section
+
+.comments{
+	margin:$sm 0;
+	padding:$sm;
+	background-color:$white;
+	max-width:$largeColumnWidth;
+
+	.no-comments{
+
+	}
+}
+
+//------------------------Playlists Page
+

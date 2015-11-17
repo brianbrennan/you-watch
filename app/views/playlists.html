@@ -1,8 +1,14 @@
 <div class="playlists">
-	<div class="playlists" ng-repeat="p in playlists">
-		<a ng-href="/#/playlists/{{p.id}}">
-			<img src="{{p.snippet.thumbnails.default.url}}" alt="">
-			{{p.snippet.title}}
-		</a>
+	<div class="wrapper">
+		<h3>Recent Playlists</h3>
+		<div class="playlist-snippets">
+			<div class="playlist-snippet" ng-repeat="p in playlists">
+				<a ng-href="/#/playlists/{{p.id}}">
+					<img src="{{p.snippet.thumbnails.medium.url}}" alt="">
+					<p class="title">{{p.snippet.title}}</p>
+				</a>
+			</div>
+			<span class="show-hide">Show More</span>
+		</div>
 	</div>
 </div>

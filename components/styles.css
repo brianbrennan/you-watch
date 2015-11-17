@@ -77,6 +77,51 @@ header {
 .page {
   margin-top: 15px; }
 
+.hero {
+  height: 60vh; }
+
+.recent-updates {
+  background-color: #FFF;
+  padding: 15px;
+  margin: 15px 0;
+  max-width: 854px; }
+  .recent-updates h4 {
+    color: #f18c40; }
+  .recent-updates .post {
+    padding: 15px 0; }
+    .recent-updates .post h2 {
+      font-size: 20px;
+      color: #3E92A3; }
+    .recent-updates .post .date {
+      margin-bottom: 15px; }
+    .recent-updates .post .divide {
+      height: 1px;
+      width: 120px;
+      margin: 15px auto 0 auto;
+      background-color: #EEE; }
+
+.videos .show-hide, .playlists .show-hide {
+  cursor: pointer;
+  color: #3E92A3;
+  width: 120px;
+  padding-top: 30px;
+  margin: auto;
+  margin-bottom: 30px;
+  display: block;
+  text-align: center;
+  clear: both; }
+
+.video-snippet, .playlist-snippet {
+  float: left;
+  margin-top: 15px;
+  width: 30.4347826087%;
+  float: left;
+  margin-right: 4.347826087%;
+  clear: right; }
+  .video-snippet:nth-child(3n), .playlist-snippet:nth-child(3n) {
+    float: right;
+    margin-right: 0; }
+
 .vid-info {
   margin: 15px 0px;
   max-width: 854px;
@@ -101,3 +146,9 @@ header {
     margin: 15px auto 0 auto;
     display: block;
     text-align: center; }
+
+.comments {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #FFF;
+  max-width: 854px; }
