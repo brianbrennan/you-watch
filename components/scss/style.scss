@@ -5,14 +5,103 @@
 @import 'variables';
 
 
+//--------------------------------------------Styles
 
+*{
+	box-sizing:border-box;
+}
 
 body{
 	color:$black;
 	font-family:$mainFont;
+	background-color:$light-grey;
+	line-height:1.5;
+}
+
+br{
+	display:block;
+	height:$reg;
+}
+
+.wrapper{
+	@include container(1140px);
+}
+
+a{
+	color:$secondaryColor;
+	text-decoration:none;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-family:$headlineFont;
+	font-weight:800;
 }
 
 header{
 	width:100%;
-	background-color:$accent;
+	background-color:$accentColor;
+	padding:$sm 0;
+
+	a{
+		color:$white;
+	}
+
+	nav{
+		float:right;
+
+		li{
+			display:inline-block;
+			margin-left:$sm;
+		}
+	}
+}
+
+
+//------------------------Page Styling
+
+.page{
+	margin-top:$sm;
+}
+
+
+//------------------------Video Page
+
+.video{
+
+}
+
+
+//-----------------------Video Info Tab
+
+.vid-info{
+	margin:$sm 0px;
+	max-width:$largeColumnWidth;
+	padding:$sm;
+	background-color:$white;
+
+
+	h1{
+		color:$secondaryColor;
+		font-size:$medFontSize;
+	}
+
+	.description{
+		margin-top:$sm;
+		height:$lg + $sm;
+		overflow:hidden;
+		@include transition(0.2s);
+
+		&.full{
+			height:auto;
+		}
+	}
+
+	.show-hide{
+		cursor:pointer;
+		color:$secondaryColor;
+		width:$xxl;
+		margin:$sm auto 0 auto;
+		display:block;
+		text-align:center;
+	}
 }

@@ -8,9 +8,15 @@
 <body ng-app="myApp" ng-controller="mainController as main">
 
 	<header>
-		<a ng-href="/#/">Home</a>
-		<a ng-href="/#/videos/">Videos</a>
-		<a ng-href="/#/playlists/">Playlists</a>
+		<div class="wrapper">
+			<nav>
+				<ul>
+					<li><a ng-href="/#/">Home</a></li>
+					<li><a ng-href="/#/videos/">Videos</a></li>
+					<li><a ng-href="/#/playlists/">Playlists</a></li>
+				</ul>
+			</nav>
+		</div>
 	</header>
 
 	<div ng-view></div>

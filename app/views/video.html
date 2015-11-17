@@ -1,6 +1,20 @@
-<div class="video">
-	<div class="player">
-	<iframe width="800" height="450" src="{{video.player}}" frameborder="0"></iframe>
+
+
+<div class="video page">
+	<div class="wrapper">
+		<div class="player">
+			<iframe width="854" height="480" src="{{video.player}}" frameborder="0" allowfullscreen></iframe>
+		</div>
+
+		<div class="vid-info">
+			<h1>{{video.snippet.title}}</h1>
+			<h3>Published on {{video.snippet.publishedAt}}</h3>
+			<p ng-bind-html="video.snippet.description | unsafe" class="description">
+				
+			</p>
+			<span class="show-hide">Show More</span>
+
+		</div>
+
 	</div>
-	{{video.snippet.title}}
 </div>

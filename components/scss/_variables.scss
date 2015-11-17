@@ -6,8 +6,35 @@
 $mainFont:		'Open Sans', sans-serif;
 $headlineFont:	'Lato', sans-serif;
 
+//------------------------Font Sizing
+
+$minFontSize:	11px;
+$smFontSize:	13px;
+$regFontSize:	16px;
+$medFontSize:	20px;
+$lgFontSize:	30px;
+$xlFontSize:	60px;
+
 //------------------------Colors
 
 $accentColor:  	#f18c40;
 $secondaryColor:#3E92A3;
 $black: 		#555;
+$white:			#FFF;
+$light-grey:	#EEE;
+
+//-----------------------Spacing
+
+$mic:			3px;
+$tny:			8px;
+$sm:			15px;
+$reg:			30px;
+$med:			45px;
+$lg:			60px;
+$xl:			90px;
+$xxl:			120px;
+
+
+//-----------------------Sizing
+
+$largeColumnWidth:	854px;

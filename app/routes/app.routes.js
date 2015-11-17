@@ -2,7 +2,9 @@ var route = angular.module('app.routes', ['ngRoute']);
 
 route.config(function($routeProvider, $locationProvider){
 		$routeProvider.when('/', {
-			templateUrl: 'app/views/home.html'
+			templateUrl: 'app/views/home.html',
+			controller: 'homeController',
+			controllerAs: 'home'
 		})
 
 		.when('/videos/', {
