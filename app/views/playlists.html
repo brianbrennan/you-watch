@@ -1,6 +1,6 @@
 <div class="playlists page">
 	<div class="wrapper">
-		<h3>Recent Playlists</h3>
+		<h3>Playlists</h3>
 		<div class="playlist-snippets">
 			<div class="playlist-snippet" ng-repeat="p in playlists">
 				<a ng-href="/#/playlists/{{p.id}}">
@@ -8,7 +8,8 @@
 					<p class="title">{{p.snippet.title}}</p>
 				</a>
 			</div>
-			<span class="show-hide">Show More</span>
+			<span class="show-hide" ng-hide="loading">Show More</span>
+			<span class="show-hide" ng-show="loading"><img src="components/img/loading.gif" alt="" width="60px"></span>
 		</div>
 	</div>
 </div>

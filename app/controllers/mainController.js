@@ -5,4 +5,13 @@ angular.module('mainCtrl', [])
 			.success(function(res){
 				$scope.settings = res;
 			});
+
+		s('.sub-head')
+			.on('mouseenter', function(){
+				s('.sub').css('display','block');
+			})
+
+			.on('mouseleave', function(){
+				s('.sub').css('display','none');
+			})
 	});

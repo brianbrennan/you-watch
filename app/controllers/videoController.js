@@ -5,17 +5,23 @@ angular.module('videoCtrl', [])
 
 		var video_id = $location.path().substr(8,$location.path().length - 1);
 
-		$http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + video_id + '&key=' + $scope.settings.api_key)
+		$http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet%2cstatistics&id=' + video_id + '&key=' + $scope.settings.api_key)
 
 			.success(function(res){
 
 				$scope.video = res.items[0];
+
+				// console.log($scope.video);
 
 				//Give a formatted date for the view
 				setPublishAtDate();
 
 				//Formats Description
 				preserveDescription();
+
+				//Sidebar loading
+				$scope.recentLoading = true;
+				sideBar();
 
 				$scope.video.player = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + video_id + '?autoplay=0&showinfo=0');
 
@@ -29,6 +35,23 @@ angular.module('videoCtrl', [])
 					}
 				});
 
+				
+				var likes = Number($scope.video.statistics.likeCount);
+				var total = Number($scope.video.statistics.dislikeCount) + likes;
+
+				likeRatio = likes / total * 100;
+
+				s('.like-bar').css('width', String(likeRatio + '%'));
+
+
+				$scope.video.statistics.viewCount = numberWithCommas($scope.video.statistics.viewCount);
+				$scope.video.statistics.likeCount = numberWithCommas($scope.video.statistics.likeCount);
+				$scope.video.statistics.dislikeCount = numberWithCommas($scope.video.statistics.dislikeCount);
+
+
+				// console.log(likeRatio);
+
+				
 			});
 
 		function setPublishAtDate(){
@@ -95,6 +118,30 @@ angular.module('videoCtrl', [])
 			d = d.replace( /(https:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
 
 			return d;
+		}
+
+		function numberWithCommas(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		function sideBar(){
+			$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
+			.success(function(res){
+				$scope.uploadsPlaylistId = res.items[0].contentDetails.relatedPlaylists.uploads;
+
+				getVideos();
+				
+			});
+		}
+
+		function getVideos(){
+			
+			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails%2C+snippet&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=5&key=' + $scope.settings.api_key)
+				.success(function(res){
+					$scope.recentVideos = res.items;
+					$scope.recentLoading = false;
+				});
+			
 		}
 
 	})

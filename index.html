@@ -9,11 +9,66 @@
 
 	<header>
 		<div class="wrapper">
+			<div class="logo">
+				<a ng-href="/#/"><img src="components/img/logo.png" alt=""></a>
+			</div>
 			<nav>
 				<ul>
-					<li><a ng-href="/#/">Home</a></li>
-					<li><a ng-href="/#/videos/">Videos</a></li>
-					<li><a ng-href="/#/playlists/">Playlists</a></li>
+					<a ng-href="/#/"><li>Home</li></a>
+					<!-- <a href="/#/shows">
+						<li class="sub-head">Shows
+							<ul class="sub">
+								<a href="/#/shows/game-grumps">
+									<li>
+										Game Grumps
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Grumpcade
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Steam Train
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Game Grumps Animated
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Best Of
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Table Flip
+									</li>
+								</a>
+								<a href="">
+									<li>
+										One-Offs
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Guild Grumps
+									</li>
+								</a>
+								<a href="">
+									<li>
+										Commercials
+									</li>
+								</a>
+							</ul>
+						</li>
+					</a> -->
+					<a ng-href="/#/videos/"><li>Uploads</li></a>
+					<a ng-href="/#/playlists/"><li>Playlists</li></a>
+					<a href="http://1shirt.com/collections/gamegrumps"><li>Store</li></a>
 				</ul>
 			</nav>
 		</div>
@@ -21,6 +76,38 @@
 
 	<div ng-view></div>
 
+	<footer>
+		<div class="wrapper">
+			<ul class="mainFeet">
+				<li><a href="/#/">Home</a></li>
+				<!-- <li>
+					<a href="/#/">Shows</a>
+					<ul>
+						<li><a href="">Game Grumps</a></li>
+						<li><a href="">Grumpcade</a></li>
+						<li><a href="">Steam Train</a></li>
+						<li><a href="">Game Grumps Animated</a></li>
+						<li><a href="">Best Of</a></li>
+						<li><a href="">Table Flip</a></li>
+						<li><a href="">One-Offs</a></li>
+						<li><a href="">Guild Grumps</a></li>
+						<li><a href="">Commercials</a></li>
+					</ul>
+				</li> -->
+			
+				<li><a href="/#/">Uploads</a></li>
+			</ul>
+			<ul class="mainFeet">
+				<li><a href="/#/">Playlists</a></li>
+				<li><a href="/#/">Store</a></li>
+			</ul>
+
+			<div class="footLogo">
+				<img src="components/img/logo.png" alt="">
+			</div>
+
+		</div>
+	</footer>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.js"></script>

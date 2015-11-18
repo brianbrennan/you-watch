@@ -1,6 +1,6 @@
 <div class="videos page">
 	<div class="wrapper">
-		<h3>Recent Uploads</h3>
+		<h3>Uploads</h3>
 		<div class="video-snippets">
 			<div class="video-snippet" ng-repeat="v in videos">
 				<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
@@ -9,7 +9,8 @@
 				</a>
 			</div>
 
-			<span class="show-hide">Show More</span>
+			<span class="show-hide" ng-hide="loading">Show More</span>
+			<span class="show-hide" ng-show="loading"><img src="components/img/loading.gif" alt="" width="60px"></span>
 		</div>
 	</div>
 </div>

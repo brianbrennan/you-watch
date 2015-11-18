@@ -1,6 +1,16 @@
-<div class="playlist">
-	<div class="player">
-		<iframe width="854" height="480" src="{{playlist.player}}" frameborder="0" allowfullscreen></iframe>
+<div class="videos page playlists">
+	<div class="wrapper">
+		<h3>{{playlistTitle}}</h3>
+		<div class="video-snippets">
+			<div class="video-snippet" ng-repeat="v in videos">
+				<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
+					<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
+					<p class="title">{{v.snippet.title}}</p>
+				</a>
+			</div>
+
+			<span class="show-hide" ng-hide="loading">Show More</span>
+			<span class="show-hide" ng-show="loading"><img src="components/img/loading.gif" alt="" width="60px"></span>
+		</div>
 	</div>
-	{{playlist.snippet.title}}
 </div>

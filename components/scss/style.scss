@@ -32,7 +32,7 @@ br{
 }
 
 .wrapper{
-	@include container(1140px);
+	@include container(1160px);
 }
 
 a{
@@ -48,7 +48,16 @@ h1,h2,h3,h4,h5,h6{
 header{
 	width:100%;
 	background-color:$accentColor;
-	padding:$sm 0;
+
+	.logo{
+		float:left;
+
+
+		img{
+			width:$xxl + $xxl;
+			margin-left:-($lg);
+		}
+	}
 
 	a{
 		color:$white;
@@ -60,6 +69,38 @@ header{
 		li{
 			display:inline-block;
 			margin-left:$sm;
+			margin-top:$tny;
+			padding:$tny $sm;
+			border-radius: $mic;
+
+			&:hover{
+				background-color:$secondaryColor;
+			}
+		}
+
+		.sub-head{
+			position:relative;
+		}
+
+		.sub{
+			display:none;
+			position:absolute;
+			top:$reg + $tny;
+			left:0;
+			margin:0;
+			padding:$tny;
+			background-color:$secondaryColor;
+			width:$xxl * 2.5;
+
+			li{
+				display:block;
+				margin-left:0;
+
+				&:hover{
+					background-color:$light;
+					color:$dark;
+				}
+			}
 		}
 	}
 }
@@ -69,6 +110,7 @@ header{
 
 .page{
 	margin-top:$sm;
+	min-height:80vh;
 }
 
 //------------------------Home Page Styling
@@ -79,13 +121,25 @@ header{
 
 .hero{
 	height:60vh;
+
+	img{
+		height:100%;
+	}
+}
+
+.featured-videos{
+	margin:$sm 0;
+	padding:$sm;
+	@include span(12);
+	background-color:$white;
 }
 
 .recent-updates{
 	background-color:$white;
 	padding:$sm;
 	margin:$sm 0;
-	max-width:$largeColumnWidth;
+	@include span(9);
+	float:left;
 
 	h4{
 		color:$accentColor;
@@ -110,6 +164,17 @@ header{
 			background-color:$light-grey;
 		}
 	}
+}
+
+.social{
+	margin:$sm 0;
+	float:right;
+	padding:$sm;
+	background-color:$white;
+	@include span(3);
+	@include last();
+
+
 }
 
 //------------------------Videos Page / Playlists Page
@@ -148,6 +213,34 @@ header{
 
 }
 
+.left{
+	@include span(9);
+}
+
+.right{
+	@include span(3);
+	@include last();
+}
+
+.player{
+	background:url('img/loading.gif') no-repeat;
+	background-size: $lg;
+	background-position:38% 50%;
+}
+
+//-----------------------Sidebar
+
+.recent-video-snippet{
+	font-size:$smFontSize;
+	clear:both;
+
+	img{
+		float:left;
+		margin-right:$tny;
+		margin-bottom:$sm;
+	}
+}
+
 
 //-----------------------Video Info Tab
 
@@ -156,11 +249,13 @@ header{
 	max-width:$largeColumnWidth;
 	padding:$sm;
 	background-color:$white;
+	position:relative;
 
 
 	h1{
 		color:$secondaryColor;
 		font-size:$medFontSize;
+		max-width:80%;
 	}
 
 	.description{
@@ -171,6 +266,61 @@ header{
 
 		&.full{
 			height:auto;
+		}
+	}
+
+	.likes-views{
+		position:absolute;
+		top:$sm;
+		right:$sm;
+		font-weight:bold;
+		color:$black;
+		text-align:right;
+
+		.likes{
+			color:$black;
+			font-weight:400;
+			font-size: $smFontSize;
+			text-align:right;
+		}
+
+		.bar{
+			height:3px;
+			width:$xxl;
+			background-color:$light-grey;
+			margin:$sm 0 $tny 0;
+			float:right;
+
+			.like-bar{
+				height:100%;
+				background-color: $secondaryColor;
+			}
+		}
+
+		.likes-num, .dislikes-num{
+			margin-left:$tny;
+			clear:right;
+			display:inline;
+			.thumb{
+				cursor:pointer;
+				opacity:0.8;
+				svg{
+					margin-bottom: -(5px);
+				}
+
+				&:hover{
+					opacity:1;
+				}
+			}
+		}
+
+		.dislikes-num{
+			.thumb{
+				svg{
+					@include transform(rotate(180deg));
+					margin-bottom:-($tny);
+				}
+			}
 		}
 	}
 
@@ -200,3 +350,39 @@ header{
 
 //------------------------Playlists Page
 
+
+
+//-----------------------Footer Styles
+
+footer{
+	width:100%;
+	background-color:$dark;
+	padding:$reg 0;
+
+	a{
+		color:$white;
+
+		&:hover{
+			color:$light-grey;
+		}
+	}
+
+	ul.mainFeet{
+		@include span(3);
+		li{
+			margin:$tny;
+		}
+	}
+
+	.footLogo{
+		@include span(3);
+		@include last();
+		text-align:left;
+
+		img{
+			@include filter(grayscale(1));
+			opacity:0.3;
+			max-width:100%;
+		}
+	}
+}
