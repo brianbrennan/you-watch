@@ -18,9 +18,10 @@ angular.module('homeCtrl', [])
 
 		function getVideos(){
 			
-			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=1&key=' + $scope.settings.api_key)
+			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=snippet%2ccontentDetails&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=1&key=' + $scope.settings.api_key)
 				.success(function(res){
-					$scope.mostRecent = res.items[0];
+					$scope.mostRecent = res;
+					
 				});
 			
 		}
