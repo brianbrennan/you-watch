@@ -99,6 +99,12 @@ header {
         header nav .sub li:hover {
           background-color: #AFEBFA;
           color: #2c3e50; }
+  header.grumpcade {
+    background-color: #D93651; }
+  header.steam-train {
+    background-color: #5186FC; }
+  header.table-flip {
+    background-color: #5B3A61; }
 
 .page {
   margin-top: 15px;

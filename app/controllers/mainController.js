@@ -1,6 +1,6 @@
 angular.module('mainCtrl', [])
 
-	.controller('mainController', function($http, $scope){
+	.controller('mainController', function($http, $scope, $rootScope){
 		$http.get('app/model/settings.json')
 			.success(function(res){
 				$scope.settings = res;
@@ -13,5 +13,9 @@ angular.module('mainCtrl', [])
 
 			.on('mouseleave', function(){
 				s('.sub').css('display','none');
-			})
+			});
+
+		$rootScope.$on('$locationChangeStart', function(event, next, current){
+			s('header').removeClass();
+		});
 	});

@@ -23,6 +23,7 @@ angular.module('videoCtrl', [])
 				$scope.recentLoading = true;
 				sideBar();
 
+
 				$scope.video.player = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + video_id + '?autoplay=0&showinfo=0');
 
 				s('.show-hide').on('click', function(){
@@ -49,7 +50,8 @@ angular.module('videoCtrl', [])
 				$scope.video.statistics.dislikeCount = numberWithCommas($scope.video.statistics.dislikeCount);
 
 
-				// console.log(likeRatio);
+				//update header
+				checkShow();
 
 				
 			});
@@ -142,6 +144,20 @@ angular.module('videoCtrl', [])
 					$scope.recentLoading = false;
 				});
 			
+		}
+
+		function checkShow(){
+			var title = $scope.video.snippet.title;
+
+			if(title.indexOf('Grumpcade') >= 0){
+				s('header').addClass('grumpcade');
+			} else if(title.indexOf('Steam Train') >= 0){
+				s('header').addClass('steam-train');
+			} else if(title.indexOf('Table Flip') >= 0){
+				s('header').addClass('table-flip');
+			} else {
+				s('header').removeClass();
+			}
 		}
 
 	})
