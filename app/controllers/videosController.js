@@ -51,20 +51,4 @@ angular.module('videosCtrl', [])
 				});
 			
 		}
-
-		function notUpload(){
-			$scope.loading = true;
-			
-			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=1&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
-				.success(function(res){
-					
-					$scope.nextToken = res.nextPageToken;
-
-					if(typeof res.items[0].contentDetails.upload !== 'undefined'){
-						$scope.videos.push(res.items[0]);
-					} else {
-						notUpload();
-					}
-				});
-		}
 	});

@@ -136,11 +136,20 @@ angular.module('videoCtrl', [])
 		}
 
 		function getVideos(){
+
+			$scope.recentLoading = true;
 			
 			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=5&key=' + $scope.settings.api_key)
 			.success(function(res){
-				$scope.recentVideos = res.items;
+				$scope.recentVideos = [];
 				$scope.nextToken = res.nextPageToken;
+
+				for(var i = 0; i < res.items.length; i++){
+					if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+						$scope.recentVideos.push(res.items[i]);
+					}
+				}
+
 				$scope.recentLoading = false;
 			});
 			
