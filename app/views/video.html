@@ -51,7 +51,7 @@
 			<span ng-show="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
 			<div class="recent-video-snippets">
 				<div class="recent-video-snippet" ng-repeat="v in recentVideos">
-					<a ng-href="/#/videos/{{v.contentDetails.videoId}}">
+					<a ng-href="/#/videos/{{v.contentDetails.upload.videoId}}">
 						<img src="{{v.snippet.thumbnails.default.url}}" alt="">
 						{{v.snippet.title}}
 					</a>

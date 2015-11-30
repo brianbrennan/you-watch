@@ -4,7 +4,7 @@ angular.module('videosCtrl', [])
 		$scope.loading = true;
 		$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
 			.success(function(res){
-				$scope.uploadsPlaylistId = res.items[0].contentDetails.relatedPlaylists.uploads;
+				$scope.channelId = res.items[0].id;
 
 				getVideos();
 
@@ -17,7 +17,7 @@ angular.module('videosCtrl', [])
 
 		function getVideos(){
 			
-			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails%2C+snippet&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=9&key=' + $scope.settings.api_key)
+			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=9&key=' + $scope.settings.api_key)
 				.success(function(res){
 					$scope.videos = res.items;
 					$scope.nextToken = res.nextPageToken;
@@ -29,15 +29,38 @@ angular.module('videosCtrl', [])
 		function getMore(){
 			$scope.loading = true;
 			
-			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails%2C+snippet&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=9&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
+			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=9&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
 				.success(function(res){
+					console.log(res);
 					for(var i = 0; i < res.items.length; i++){
-						$scope.videos.push(res.items[i]);
+						if(typeof res.items[i].contentDetails.upload !== 'undefined')
+							$scope.videos.push(res.items[i]);
+						else
+							notUpload()
+
 					}
 					$scope.nextToken = res.nextPageToken;
 
 					$scope.loading = false;
 				});
 			
+		}
+
+		function notUpload(){
+			$scope.loading = true;
+			
+			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=1&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
+				.success(function(res){
+					console.log(typeof res.items[0].contentDetails.upload);
+					for(var i = 0; i < res.items.length; i++){
+						if(typeof res.items[i].contentDetails.upload !== 'undefined')
+							return $scope.videos.push(res.items[i]);
+						else
+							notUpload()
+					}
+					$scope.nextToken = res.nextPageToken;
+
+					$scope.loading = false;
+				});
 		}
 	});

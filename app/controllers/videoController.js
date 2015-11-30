@@ -129,20 +129,20 @@ angular.module('videoCtrl', [])
 		function sideBar(){
 			$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
 			.success(function(res){
-				$scope.uploadsPlaylistId = res.items[0].contentDetails.relatedPlaylists.uploads;
+				$scope.channelId = res.items[0].id;
 
 				getVideos();
-				
 			});
 		}
 
 		function getVideos(){
 			
-			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails%2C+snippet&playlistId=' + $scope.uploadsPlaylistId + '&maxResults=5&key=' + $scope.settings.api_key)
-				.success(function(res){
-					$scope.recentVideos = res.items;
-					$scope.recentLoading = false;
-				});
+			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=5&key=' + $scope.settings.api_key)
+			.success(function(res){
+				$scope.recentVideos = res.items;
+				$scope.nextToken = res.nextPageToken;
+				$scope.recentLoading = false;
+			});
 			
 		}
 
