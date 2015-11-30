@@ -19,8 +19,16 @@ angular.module('videosCtrl', [])
 			
 			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=9&key=' + $scope.settings.api_key)
 				.success(function(res){
-					$scope.videos = res.items;
+					$scope.videos = [];
 					$scope.nextToken = res.nextPageToken;
+
+					for(var i = 0; i < res.items.length; i++){
+						if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+							$scope.videos.push(res.items[i]);
+						}
+					}
+
+					
 					$scope.loading = false;
 				});
 			
@@ -31,16 +39,14 @@ angular.module('videosCtrl', [])
 			
 			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=9&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
 				.success(function(res){
-					console.log(res);
-					for(var i = 0; i < res.items.length; i++){
-						if(typeof res.items[i].contentDetails.upload !== 'undefined')
-							$scope.videos.push(res.items[i]);
-						else
-							notUpload()
 
-					}
 					$scope.nextToken = res.nextPageToken;
 
+					for(var i = 0; i < res.items.length; i++){
+						if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+							$scope.videos.push(res.items[i]);
+						}
+					}
 					$scope.loading = false;
 				});
 			
@@ -51,16 +57,14 @@ angular.module('videosCtrl', [])
 			
 			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=1&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
 				.success(function(res){
-					console.log(typeof res.items[0].contentDetails.upload);
-					for(var i = 0; i < res.items.length; i++){
-						if(typeof res.items[i].contentDetails.upload !== 'undefined')
-							return $scope.videos.push(res.items[i]);
-						else
-							notUpload()
-					}
+					
 					$scope.nextToken = res.nextPageToken;
 
-					$scope.loading = false;
+					if(typeof res.items[0].contentDetails.upload !== 'undefined'){
+						$scope.videos.push(res.items[0]);
+					} else {
+						notUpload();
+					}
 				});
 		}
 	});
