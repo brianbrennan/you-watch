@@ -1,6 +1,6 @@
 angular.module('mainCtrl', [])
 
-	.controller('mainController', function($http, $scope, $rootScope){
+	.controller('mainController', function($http, $scope, $rootScope, $window, $location){
 		$http.get('app/model/settings.json')
 			.success(function(res){
 				$scope.settings = res;
@@ -17,5 +17,9 @@ angular.module('mainCtrl', [])
 
 		$rootScope.$on('$locationChangeStart', function(event, next, current){
 			s('header').removeClass();
+		});
+
+		$rootScope.$on('$routeChangeSuccess', function(event, next, current){
+			$window.ga('send', 'pageview', { page: $location.path() });
 		});
 	});
