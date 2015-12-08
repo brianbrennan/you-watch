@@ -21,6 +21,7 @@ angular.module('videoCtrl', [])
 
 				//Sidebar loading
 				$scope.recentLoading = true;
+				$scope.nextLoading = true;
 				sideBar();
 
 
@@ -132,6 +133,7 @@ angular.module('videoCtrl', [])
 				$scope.channelId = res.items[0].id;
 
 				getVideos();
+				getNextVideo();
 			});
 		}
 
@@ -167,6 +169,17 @@ angular.module('videoCtrl', [])
 			} else {
 				s('header').removeClass();
 			}
+		}
+
+		function getNextVideo(){
+			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&type=video&key=' + $scope.settings.api_key)
+
+				.success(function(res){
+					console.log(res);
+					$scope.nextVideo = res.items[0];
+					console.log($scope.nextVideo);
+					$scope.nextLoading = false;
+				});
 		}
 
 	})

@@ -47,6 +47,14 @@
 		</div>
 
 		<div class="right">
+			<h4>What to Watch Next</h4>
+			<span ng-show="nextLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
+			<div class="next-video-snippet">
+				<a ng-href="/#/videos/{{nextVideo.id.videoId}}">
+					<img src="{{nextVideo.snippet.thumbnails.default.url}}" alt="">
+					{{nextVideo.snippet.title}}
+				</a>
+			</div>
 			<h4>Recent Uploads</h4>
 			<span ng-show="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
 			<div class="recent-video-snippets">

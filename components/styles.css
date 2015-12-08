@@ -192,16 +192,19 @@ header {
   margin-right: 4.347826087%;
   float: right;
   margin-right: 0; }
+  .right h4 {
+    clear: both; }
 
 .player {
   background: url('img/loading.gif') no-repeat;
   background-size: 60px;
   background-position: 38% 50%; }
 
-.recent-video-snippet {
+.recent-video-snippet, .next-video-snippet {
   font-size: 13px;
-  clear: both; }
-  .recent-video-snippet img {
+  clear: both;
+  display: block; }
+  .recent-video-snippet img, .next-video-snippet img {
     float: left;
     margin-right: 8px;
     margin-bottom: 15px; }

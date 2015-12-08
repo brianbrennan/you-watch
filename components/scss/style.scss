@@ -233,6 +233,10 @@ header{
 .right{
 	@include span(3);
 	@include last();
+
+	h4{
+		clear:both;
+	}
 }
 
 .player{
@@ -243,9 +247,10 @@ header{
 
 //-----------------------Sidebar
 
-.recent-video-snippet{
+.recent-video-snippet, .next-video-snippet{
 	font-size:$smFontSize;
 	clear:both;
+	display:block;
 
 	img{
 		float:left;

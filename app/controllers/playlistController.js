@@ -20,6 +20,7 @@ angular.module('playlistCtrl', [])
 			
 			$http.get(' https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails%2C+snippet&playlistId=' + playlistId + '&maxResults=9&key=' + $scope.settings.api_key)
 				.success(function(res){
+					console.log(res);
 					$scope.videos = res.items;
 					$scope.nextToken = res.nextPageToken;
 					getPlaylistName();
