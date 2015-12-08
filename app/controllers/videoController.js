@@ -145,7 +145,7 @@ angular.module('videoCtrl', [])
 				$scope.nextToken = res.nextPageToken;
 
 				for(var i = 0; i < res.items.length; i++){
-					if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+					if(res.items[i].snippet.type === 'upload'){
 						$scope.recentVideos.push(res.items[i]);
 					}
 				}

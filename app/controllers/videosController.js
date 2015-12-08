@@ -23,7 +23,7 @@ angular.module('videosCtrl', [])
 					$scope.nextToken = res.nextPageToken;
 
 					for(var i = 0; i < res.items.length; i++){
-						if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+						if(res.items[i].snippet.type === 'upload'){
 							$scope.videos.push(res.items[i]);
 						}
 					}
@@ -40,10 +40,14 @@ angular.module('videosCtrl', [])
 			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=9&pageToken=' + $scope.nextToken + '&key=' + $scope.settings.api_key)
 				.success(function(res){
 
+					console.log(res);
+
+
+
 					$scope.nextToken = res.nextPageToken;
 
 					for(var i = 0; i < res.items.length; i++){
-						if(typeof res.items[i].contentDetails.upload !== 'undefined'){
+						if(res.items[i].snippet.type === 'upload'){
 							$scope.videos.push(res.items[i]);
 						}
 					}
