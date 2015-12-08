@@ -132,7 +132,7 @@ header{
 }
 
 .hero{
-	height:60vh;
+	height:40vh;
 
 	img{
 		height:100%;
@@ -145,6 +145,15 @@ header{
 	padding:$sm;
 	@include span(12);
 	background-color:$white;
+
+	.video-snippet{
+		@include span(4 of 12);
+		clear:none;
+
+		&:nth-child(4){
+			@include last();
+		}
+	}
 }
 
 .recent-updates{
@@ -186,7 +195,17 @@ header{
 	background-color:$white;
 	@include span(3);
 	@include last();
+	font-family:$social;
 
+	span{
+		font-size:$lgFontSize;
+		text-align:center;
+		@include span(6 of 12);
+
+		&:nth-child(2n){
+			@include last();
+		}
+	}
 
 }
 

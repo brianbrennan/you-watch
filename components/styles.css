@@ -32,6 +32,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+@font-face {
+  font-family: 'Socicon';
+  src: url(fonts/socicon.woff); }
+
 * {
   box-sizing: border-box; }
 
@@ -111,7 +115,7 @@ header {
   min-height: 80vh; }
 
 .hero {
-  height: 60vh; }
+  height: 40vh; }
   .hero img {
     height: 100%;
     width: 100%; }
@@ -124,6 +128,14 @@ header {
   margin-left: 0;
   margin-right: 0;
   background-color: #FFF; }
+  .featured-videos .video-snippet {
+    width: 30.4347826087%;
+    float: left;
+    margin-right: 4.347826087%;
+    clear: none; }
+    .featured-videos .video-snippet:nth-child(4) {
+      float: right;
+      margin-right: 0; }
 
 .recent-updates {
   background-color: #FFF;
@@ -157,7 +169,17 @@ header {
   float: left;
   margin-right: 4.347826087%;
   float: right;
-  margin-right: 0; }
+  margin-right: 0;
+  font-family: 'Socicon'; }
+  .social span {
+    font-size: 30px;
+    text-align: center;
+    width: 47.8260869565%;
+    float: left;
+    margin-right: 4.347826087%; }
+    .social span:nth-child(2n) {
+      float: right;
+      margin-right: 0; }
 
 .videos .show-hide, .playlists .show-hide {
   cursor: pointer;
