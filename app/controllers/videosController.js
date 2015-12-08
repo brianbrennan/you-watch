@@ -55,4 +55,9 @@ angular.module('videosCtrl', [])
 				});
 			
 		}
+
+		$scope.sortDate = function(v){
+			var date = new Date(v.snippet.publishedAt);
+			return date;
+		};
 	});
