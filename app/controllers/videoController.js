@@ -12,12 +12,15 @@ angular.module('videoCtrl', [])
 				$scope.video = res.items[0];
 
 				//video setup
+				$scope.autoplay = getCookie('gamegrumpsAutoplay') ? 1:0;
+				console.log($scope.autoplay);
+
 				$scope.video_id = video_id;
 				$scope.playerHeight = 480;
 				$scope.playerWidth = 854;
 				$scope.playerVars = {
 					'showinfo': 0,
-					'autoplay': 0
+					'autoplay': $scope.autoplay
 				};
 
 				// console.log($scope.video);
@@ -64,10 +67,13 @@ angular.module('videoCtrl', [])
 
 				//update header
 				checkShow();
-				$scope.autoplay = s('.toggle').hasClass('active')[0];
-				setCookie('gamegrumpsAutoplay',$scope.autoplay,2);
+
+				console.log($scope.autoplay);
 
 				//set toggle
+				if($scope.autoplay == 1)
+					s(this).addClass('active');
+
 				s('.toggle').on('click', function(e){
 					if(s(this).hasClass('active')[0]){
 						s(this).removeClass('active');
@@ -227,5 +233,16 @@ angular.module('videoCtrl', [])
 		d.setTime(d.getTime() + (exdays*24*60*60*1000));
 		var expires = "expires="+d.toUTCString();
 		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+
+	function getCookie(cname) {
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1);
+			if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+		}
+		return false;
 	}
 
