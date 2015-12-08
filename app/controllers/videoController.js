@@ -11,6 +11,15 @@ angular.module('videoCtrl', [])
 
 				$scope.video = res.items[0];
 
+				//video setup
+				$scope.video_id = video_id;
+				$scope.playerHeight = 480;
+				$scope.playerWidth = 854;
+				$scope.playerVars = {
+					'showinfo': 0,
+					'autoplay': 0
+				};
+
 				// console.log($scope.video);
 
 				//Give a formatted date for the view
@@ -24,8 +33,10 @@ angular.module('videoCtrl', [])
 				$scope.nextLoading = true;
 				sideBar();
 
+				$scope.$on('youtube.player.ended', function($event, player){
+					$location.path('/videos/' + $scope.nextVideo.id.videoId);
+				});
 
-				$scope.video.player = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + video_id + '?autoplay=0&showinfo=0');
 
 				s('.show-hide').on('click', function(){
 					if(s('.description').hasClass('full')[0]){
