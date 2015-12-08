@@ -2,7 +2,6 @@ angular.module('playlistCtrl', [])
 
 	.controller('playlistController', function($http, $scope, $location, $sce){
 		var playlistId = $location.path().substr(11,$location.path().length - 1);
-		console.log(playlistId);
 
 		$scope.loading = true;
 
