@@ -163,7 +163,7 @@ header {
   cursor: pointer;
   color: #3E92A3;
   width: 120px;
-  padding-top: 30px;
+  padding-top: 15px;
   margin: auto;
   margin-bottom: 30px;
   display: block;
@@ -180,6 +180,10 @@ header {
   .video-snippet:nth-child(3n), .playlist-snippet:nth-child(3n) {
     float: right;
     margin-right: 0; }
+  .video-snippet:nth-child(3n+1), .playlist-snippet:nth-child(3n+1) {
+    clear: left; }
+  .video-snippet:nth-last-child(3), .playlist-snippet:nth-last-child(3) {
+    margin-bottom: 15px; }
 
 .left {
   width: 73.9130434783%;
@@ -199,6 +203,45 @@ header {
   background: url('img/loading.gif') no-repeat;
   background-size: 60px;
   background-position: 38% 50%; }
+
+.toggles {
+  margin-bottom: 30px; }
+  .toggles .toggle {
+    height: 16px;
+    width: 45px;
+    background-color: #FFF;
+    float: left;
+    border-radius: 8px;
+    clear: left;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #FFF;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    transition: 0.2s; }
+    .toggles .toggle .switch {
+      background-color: #5186FC;
+      width: 14px;
+      height: 14px;
+      border-radius: 8px;
+      position: absolute;
+      left: 1px;
+      top: 0px;
+      -webkit-transition: 0.2s;
+      -moz-transition: 0.2s;
+      transition: 0.2s; }
+    .toggles .toggle.active {
+      background-color: #5186FC;
+      border-color: #5186FC; }
+      .toggles .toggle.active .switch {
+        left: 29px;
+        background-color: #FFF; }
+  .toggles h5 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    float: right;
+    margin-top: -3px; }
 
 .recent-video-snippet, .next-video-snippet {
   font-size: 13px;

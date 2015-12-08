@@ -198,7 +198,7 @@ header{
 		cursor:pointer;
 		color:$secondaryColor;
 		width:$xxl;
-		padding-top:$reg;
+		padding-top:$sm;
 		margin:auto;
 		margin-bottom:$reg;
 		display:block;
@@ -216,6 +216,12 @@ header{
 
 	&:nth-child(3n){
 		@include last();
+	}
+	&:nth-child(3n + 1){
+		clear:left;
+	}
+	&:nth-last-child(3){
+		margin-bottom:$sm;
 	}
 }
 
@@ -243,6 +249,52 @@ header{
 	background:url('img/loading.gif') no-repeat;
 	background-size: $lg;
 	background-position:38% 50%;
+}
+
+.toggles{
+	margin-bottom:$reg;
+
+	.toggle{
+		height:$sm + 1px;
+		width:$med;
+		background-color:$white;
+		float:left;
+		border-radius:$tny;
+		clear:left;
+		cursor:pointer;
+		position:relative;
+		border:1px solid $white;
+		@include transition(0.2s);
+
+		.switch{
+			background-color:$blue;
+			width:$sm - 1px;
+			height:$sm - 1px;
+			border-radius:$tny;
+			position:absolute;
+			left:1px;
+			top:0px;
+			@include transition(0.2s);
+		}
+
+		&.active{
+			background-color:$blue;
+			border-color:$blue;
+
+			.switch{
+				left:$med - $sm - 1px;
+				background-color:$white;
+			}
+		}
+	}
+
+	h5{
+		font-family:$mainFont;
+		font-size:$smFontSize;
+		font-weight:normal;
+		float:right;
+		margin-top:-($mic);
+	}
 }
 
 //-----------------------Sidebar

@@ -3,7 +3,7 @@
 		<h3>Uploads</h3>
 		<div class="video-snippets">
 			<div class="video-snippet" ng-repeat="v in videos | orderBy: sortDate :true">
-				<a ng-href="/#/videos/{{v.contentDetails.upload.videoId}}">
+				<a ng-href="/#/videos/{{v.snippet.resourceId.videoId}}">
 					<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
 					<p class="title">{{v.snippet.title}}</p>
 				</a>

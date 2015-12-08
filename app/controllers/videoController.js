@@ -64,6 +64,23 @@ angular.module('videoCtrl', [])
 
 				//update header
 				checkShow();
+				$scope.autoplay = s('.toggle').hasClass('active')[0];
+				setCookie('gamegrumpsAutoplay',$scope.autoplay,2);
+
+				//set toggle
+				s('.toggle').on('click', function(e){
+					if(s(this).hasClass('active')[0]){
+						s(this).removeClass('active');
+					} else {
+						s(this).addClass('active');
+					}
+
+					$scope.autoplay = s(this).hasClass('active')[0];
+
+					setCookie('gamegrumpsAutoplay',$scope.autoplay,2);
+
+					
+				});
 
 				
 			});
@@ -142,6 +159,7 @@ angular.module('videoCtrl', [])
 			$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
 			.success(function(res){
 				$scope.channelId = res.items[0].id;
+				$scope.uploadPlaylist = res.items[0].contentDetails.relatedPlaylists.uploads;
 
 				getVideos();
 				getNextVideo();
@@ -152,19 +170,18 @@ angular.module('videoCtrl', [])
 
 			$scope.recentLoading = true;
 			
-			$http.get('https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=' + $scope.channelId + '&maxResults=5&key=' + $scope.settings.api_key)
-			.success(function(res){
-				$scope.recentVideos = [];
-				$scope.nextToken = res.nextPageToken;
+			$http.get('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=' + $scope.uploadPlaylist +'&maxResults=5&key=' + $scope.settings.api_key)
+				.success(function(res){
+					$scope.recentVideos = [];
+					$scope.nextToken = res.nextPageToken;
 
-				for(var i = 0; i < res.items.length; i++){
-					if(res.items[i].snippet.type === 'upload'){
+					for(var i = 0; i < res.items.length; i++){
 						$scope.recentVideos.push(res.items[i]);
 					}
-				}
 
-				$scope.recentLoading = false;
-			});
+					
+					$scope.recentLoading = false;
+				});
 			
 		}
 
@@ -204,4 +221,11 @@ angular.module('videoCtrl', [])
 		};
 
 	});
+
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+d.toUTCString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
 
