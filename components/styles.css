@@ -449,6 +449,14 @@ header {
   .comments .clear {
     clear: both;
     display: block; }
+  .comments .show-more-comments {
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: #3E92A3;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer; }
 
 .replies {
   margin-left: 90px;
@@ -465,7 +473,8 @@ header {
       font-weight: bold; }
   .replies .show-more-replies {
     color: #3E92A3;
-    cursor: pointer; }
+    cursor: pointer;
+    font-size: 13px; }
 
 .search-area input[type="text"] {
   width: 100%;

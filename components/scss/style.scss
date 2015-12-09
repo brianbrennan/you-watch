@@ -582,6 +582,16 @@ header{
 		clear:both;
 		display:block;
 	}
+
+	.show-more-comments{
+		width:100%;
+		display:block;
+		text-align:center;
+		color:$secondaryColor;
+		font-weight:bold;
+		font-size:$smFontSize;
+		cursor:pointer;
+	}
 }
 
 .replies{
@@ -609,6 +619,7 @@ header{
 	.show-more-replies{
 		color:$secondaryColor;
 		cursor:pointer;
+		font-size:$smFontSize;
 	}
 }
 

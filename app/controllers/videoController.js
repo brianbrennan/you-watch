@@ -264,19 +264,20 @@ angular.module('videoCtrl', [])
 		}
 
 		$scope.getReplies = function(c, i){
-			$scope.repliesLoading = true;
+			$scope.comments[i].repliesLoadingMore = true;
 
 			if(c.replies){
-				$scope.repliesLoadingMore = true;
+				
 				if(c.replies.nextPageToken){
 					$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + c.id + '&order=relevance&maxResults=5&pageToken=' + c.replies.nextPageToken + '&key=' + $scope.settings.api_key).
 
 					success(function(res){
-						c.replies.items.push(res.items);
+						for(var i = 0; i < res.items.length; i++)
+							c.replies.items.push(res.items[i]);
 						c.replies.nextPageToken = res.nextPageToken;
 						$scope.comments[i] = c;
 						console.log($scope.comments[i]);
-						$scope.repliesLoadingMore = false;
+						$scope.comments[i].repliesLoadingMore = false;
 					});
 				}
 			} else {
@@ -286,10 +287,25 @@ angular.module('videoCtrl', [])
 					c.replies = res;
 					$scope.comments[i] = c;
 					console.log($scope.comments[i]);
-					$scope.repliesLoading = false;
+					$scope.comments[i].repliesLoadingMore = false;
 				});
 			}
 			
+		};
+
+		$scope.getMoreComments = function(){
+			$scope.moreCommentsLoading = true;
+			console.log($scope.nextCommentPageToken);
+			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&pageToken=' + $scope.nextCommentPageToken + '&key=' + $scope.settings.api_key)
+				.success(function(res){
+					$scope.nextCommentPageToken = res.nextPageToken;
+					for(var i = 0; i < res.items.length; i++)
+						$scope.comments.push(res.items[i]);
+
+
+					
+					$scope.moreCommentsLoading = false;
+				});
 		};
 
 		$scope.theatreMode = function(b){
