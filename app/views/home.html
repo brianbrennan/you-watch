@@ -41,15 +41,12 @@
 
 		<div class="recent-videos">
 			<h4>Recent Videos</h4>
-
-			<div class="featured-snippets">
-				<span ng-show="recentLoading" class="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
-				<div class="featured-snippet" ng-repeat="v in mostRecent">
-					<a ng-href="/#/videos/{{v.contentDetails.videoId}}" href="/#/videos/{{v.contentDetails.videoId}}">
-						<img src="https://i.ytimg.com/vi/{{v.contentDetails.videoId}}/mqdefault.jpg" alt="">
-						<p class="title ng-binding">{{v.snippet.title}}</p>
-					</a>
-				</div>
+			<span ng-show="recentLoading" class="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
+			<div class="featured-snippet" ng-repeat="v in mostRecent">
+				<a ng-href="/#/videos/{{v.contentDetails.videoId}}" href="/#/videos/{{v.contentDetails.videoId}}">
+					<img src="https://i.ytimg.com/vi/{{v.contentDetails.videoId}}/mqdefault.jpg" alt="">
+					<p class="title ng-binding">{{v.snippet.title}}</p>
+				</a>
 			</div>
 		</div>
 		<div class="recent-updates">

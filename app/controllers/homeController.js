@@ -11,8 +11,6 @@ angular.module('homeCtrl', [])
 
 				getVideos();
 
-				getInstagam();
-
 				
 			});
 
