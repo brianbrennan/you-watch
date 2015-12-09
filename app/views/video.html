@@ -101,8 +101,8 @@
 							<div class="clear"></div>
 						</div>
 
-						<span class="show-hide-comment" ng-hide="repliesLoadingMore || !c.replies.nextPageToken">Show More Replies</span>
-						<span class="show-hide-comment" ng-show="commentsLoadingMore"><img src="components/img/loading.gif" alt="" width="60px"></span>
+						<span class="show-more-replies" ng-hide="repliesLoadingMore || !c.replies.nextPageToken" ng-click="getReplies(c, $index)">Show More Replies</span>
+						<span class="show-more-replies" ng-show="repliesLoadingMore"><img src="components/img/loading.gif" alt="" width="60px"></span>
 					</div>
 
 

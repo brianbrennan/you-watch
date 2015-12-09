@@ -463,6 +463,9 @@ header {
     .replies .reply .author {
       color: #3E92A3;
       font-weight: bold; }
+  .replies .show-more-replies {
+    color: #3E92A3;
+    cursor: pointer; }
 
 .search-area input[type="text"] {
   width: 100%;
