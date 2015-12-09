@@ -471,6 +471,9 @@ header {
     .replies .reply .author {
       color: #3E92A3;
       font-weight: bold; }
+    .replies .reply p {
+      max-width: 100%;
+      word-wrap: break-word; }
   .replies .show-more-replies {
     color: #3E92A3;
     cursor: pointer;

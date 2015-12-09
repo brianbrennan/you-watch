@@ -614,6 +614,11 @@ header{
 			color:$secondaryColor;
 			font-weight:bold;
 		}
+
+		p{
+			max-width:100%;
+			word-wrap:break-word;
+		}
 	}
 
 	.show-more-replies{
