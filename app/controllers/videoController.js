@@ -326,6 +326,10 @@ angular.module('videoCtrl', [])
 			}
 		};
 
+		$scope.rate = function(i){
+			$rootScope.checkAuth();
+		};
+
 	})
 
 	.filter('unsafe', function($sce) {

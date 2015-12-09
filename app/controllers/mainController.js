@@ -2,6 +2,8 @@ angular.module('mainCtrl', [])
 
 	.controller('mainController', function($http, $scope, $rootScope, $window, $location){
 
+		$rootScope.pageTitle = "Game Grumps | A Fan Made Site";
+
 		$rootScope.isAuth = false;
 
 		$http.get('app/model/settings.json')
@@ -24,7 +26,6 @@ angular.module('mainCtrl', [])
 
 		$rootScope.$on('$routeChangeSuccess', function(event, next, current){
 			$window.ga('send', 'pageview', { page: $location.path() });
-			$rootScope.checkAuth();
 		});
 
 
@@ -33,7 +34,7 @@ angular.module('mainCtrl', [])
 			if($rootScope.isAuth){
 
 			} else {
-				window.location='https://accounts.google.com/o/oauth2/auth?client_id=' + $scope.settings.client_id + '&redirect_uri=http%3A%2F%2Fgamegrumps%2Eco&response_type=token&scope=https%3A%2F%2Fwww%2Egoogleapis%2Ecom%2Fauth%2Fyoutube%2Eforce-ssl';
+				window.location='https://accounts.google.com/o/oauth2/auth?client_id=' + $scope.settings.client_id + '&redirect_uri=http%3A%2F%2Flocalhost%3A8000&response_type=token&scope=https%3A%2F%2Fwww%2Egoogleapis%2Ecom%2Fauth%2Fyoutube%2Eforce-ssl';
 			}
 		};
 	});
