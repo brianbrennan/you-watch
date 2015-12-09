@@ -138,7 +138,7 @@ header {
     clear: none; }
     .featured-videos .featured-snippet img, .recent-videos .featured-snippet img {
       width: 240px; }
-    .featured-videos .featured-snippet:nth-child(3), .recent-videos .featured-snippet:nth-child(3) {
+    .featured-videos .featured-snippet:nth-child(4), .recent-videos .featured-snippet:nth-child(4) {
       float: right;
       margin-right: 0; }
   .featured-videos span, .recent-videos span {

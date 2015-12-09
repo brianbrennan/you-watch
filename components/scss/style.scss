@@ -159,7 +159,7 @@ header{
 			width:$xxl * 2;
 		}
 
-		&:nth-child(3){
+		&:nth-child(4){
 			@include last();
 		}
 	}
