@@ -239,7 +239,7 @@ header {
   background-size: 60px;
   background-position: 50% 50%; }
 
-.recentLoading, .nextLoading {
+.recentLoading, .nextLoading, .relatedLoading {
   margin: 30px;
   display: block; }
 
@@ -296,11 +296,11 @@ header {
     .toggles .theatre.active {
       border-color: #5186FC; }
 
-.recent-video-snippet, .next-video-snippet {
+.recent-video-snippet, .next-video-snippet, .related-video-snippet {
   font-size: 13px;
   clear: both;
   display: block; }
-  .recent-video-snippet img, .next-video-snippet img {
+  .recent-video-snippet img, .next-video-snippet img, .related-video-snippet img {
     float: left;
     margin-right: 8px;
     margin-bottom: 15px; }
@@ -417,6 +417,9 @@ header {
     .comments .comment .avatar {
       float: left;
       margin-right: 30px; }
+    .comments .comment .author {
+      color: #3E92A3;
+      font-weight: bold; }
     .comments .comment .comment-content {
       float: left;
       width: 744px; }
@@ -433,6 +436,12 @@ header {
     .comments .comment .likeCount {
       color: #3E92A3;
       font-size: 13px; }
+    .comments .comment .viewReplies {
+      font-size: 13px;
+      margin-left: 30px;
+      font-weight: bold;
+      color: #3E92A3;
+      cursor: pointer; }
   .comments .commentsLoading {
     display: block;
     width: 100%;
@@ -440,6 +449,20 @@ header {
   .comments .clear {
     clear: both;
     display: block; }
+
+.replies {
+  margin-left: 90px;
+  clear: both; }
+  .replies .reply {
+    margin-bottom: 15px; }
+    .replies .reply:first-child {
+      margin-top: 15px; }
+    .replies .reply .reply-content {
+      float: left;
+      width: 614px; }
+    .replies .reply .author {
+      color: #3E92A3;
+      font-weight: bold; }
 
 .search-area input[type="text"] {
   width: 100%;

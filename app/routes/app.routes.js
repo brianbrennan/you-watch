@@ -93,6 +93,10 @@ route.config(function($routeProvider, $locationProvider){
 			controllerAs: 'search'
 		})
 
+		.when('/404', {
+			templateUrl: 'app/views/404.html'
+		})
+
 		.when('/:anything', {
 			templateUrl: 'app/views/404.html'
 		})

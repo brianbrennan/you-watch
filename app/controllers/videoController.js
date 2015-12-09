@@ -1,6 +1,7 @@
 angular.module('videoCtrl', [])
 
-	.controller('videoController', function($http, $scope, $location, $sce){
+	.controller('videoController', function($http, $scope, $location, $sce, $rootScope){
+
 
 
 		var video_id = $location.path().substr(8,$location.path().length - 1);
@@ -10,6 +11,10 @@ angular.module('videoCtrl', [])
 			.success(function(res){
 
 				$scope.video = res.items[0];
+				$rootScope.pageTitle = $scope.video.snippet.title;
+
+				if($scope.video.snippet.channelId != $scope.settings.channelId)
+					$location.path('/404');
 
 				getCookie('gamegrumpsAutoplay');
 
@@ -232,27 +237,47 @@ angular.module('videoCtrl', [])
 		}
 
 		function getNextVideo(){
-			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&type=video&key=' + $scope.settings.api_key)
+			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $scope.settings.channelId +'&maxResults=5&type=video&key=' + $scope.settings.api_key)
 
 				.success(function(res){
-					console.log(res);
 					$scope.nextVideo = res.items[0];
-					console.log($scope.nextVideo);
+					$scope.relatedVideos = [];
+					for(var i = 1; i < res.items.length; i++){
+						if(res.items[i].snippet.channelId == $scope.settings.channelId)
+							$scope.relatedVideos.push(res.items[i]);
+					}
 					$scope.nextLoading = false;
 				});
 		}
 
 		function getComments(){
 			$scope.commentsLoading = true;
-			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2creplies&videoId=' + video_id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key)
+			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key)
 				.success(function(res){
 					$scope.nextCommentPageToken = res.nextPageToken;
 					$scope.comments = res.items;
+
 
 					console.log($scope.comments);
 					$scope.commentsLoading = false;
 				});
 		}
+
+		$scope.getReplies = function(c, i){
+			$scope.repliesLoading = true;
+
+			
+				$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + c.id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key).
+
+				success(function(res){
+					c.replies = res;
+					$scope.comments[i] = c;
+					console.log($scope.comments[i]);
+					$scope.repliesLoading = false;
+				});
+			
+			
+		};
 
 		$scope.theatreMode = function(b){
 			if(b){

@@ -289,7 +289,7 @@ header{
 	background-position:50% 50%;
 }
 
-.recentLoading, .nextLoading{
+.recentLoading, .nextLoading, .relatedLoading{
 	margin:$reg;
 	display:block;
 }
@@ -358,7 +358,7 @@ header{
 
 //-----------------------Sidebar
 
-.recent-video-snippet, .next-video-snippet{
+.recent-video-snippet, .next-video-snippet, .related-video-snippet{
 	font-size:$smFontSize;
 	clear:both;
 	display:block;
@@ -530,6 +530,11 @@ header{
 			margin-right:$reg;
 		}
 
+		.author{
+			color:$secondaryColor;
+			font-weight:bold;
+		}
+
 		.comment-content{
 			float:left;
 			width:$largeColumnWidth - 110px;
@@ -557,6 +562,14 @@ header{
 			color:$secondaryColor;
 			font-size:$smFontSize;
 		}
+
+		.viewReplies{
+			font-size:$smFontSize;
+			margin-left:$reg;
+			font-weight:bold;
+			color:$secondaryColor;
+			cursor: pointer;
+		}
 	}
 
 	.commentsLoading{
@@ -568,6 +581,29 @@ header{
 	.clear{
 		clear:both;
 		display:block;
+	}
+}
+
+.replies{
+	margin-left:$xl;
+	clear:both;
+
+	.reply{
+		margin-bottom:$sm;
+
+		&:first-child{
+			margin-top:$sm;
+		}
+
+		.reply-content{
+			float:left;
+			width:$largeColumnWidth - 240px
+		}
+
+		.author{
+			color:$secondaryColor;
+			font-weight:bold;
+		}
 	}
 }
 

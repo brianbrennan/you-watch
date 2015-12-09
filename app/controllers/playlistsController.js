@@ -1,6 +1,7 @@
 angular.module('playlistsCtrl', [])
 
-	.controller('playlistsController', function($http, $scope, $location){
+	.controller('playlistsController', function($http, $scope, $location, $rootScope){
+		$rootScope.pageTitle = "Game Grumps Playlists";
 		$scope.loading = true;
 		$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
 			.success(function(res){

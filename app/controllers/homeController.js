@@ -1,6 +1,8 @@
 angular.module('homeCtrl', [])
 
-	.controller('homeController', function($http, $scope){
+	.controller('homeController', function($http, $scope, $rootScope){
+
+		$rootScope.pageTitle="Game Grumps | A Fan Made Site"
 
 		$scope.recentLoading = true;
 		$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)

@@ -1,6 +1,6 @@
 angular.module('playlistCtrl', [])
 
-	.controller('playlistController', function($http, $scope, $location, $sce){
+	.controller('playlistController', function($http, $scope, $location, $sce, $rootScope){
 		var playlistId = $location.path().substr(11,$location.path().length - 1);
 
 		$scope.loading = true;
@@ -32,6 +32,7 @@ angular.module('playlistCtrl', [])
 			$http.get('https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=' + playlistId + '&key=' + $scope.settings.api_key )
 				.success(function(res){
 					$scope.playlistTitle = res.items[0].snippet.title;
+					$rootScope.pageTitle = $scope.playlistTitle + ' Playlist';
 				});
 		}
 
