@@ -1,0 +1,16 @@
+<div class="videos page">
+	<div class="wrapper">
+		<h3>Commercials</h3>
+		<div class="video-snippets">
+			<div class="video-snippet" ng-repeat="v in videos | orderBy: sortDate :true">
+				<a ng-href="/#/videos/{{v.snippet.resourceId.videoId}}">
+					<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
+					<p class="title">{{v.snippet.title}}</p>
+				</a>
+			</div>
+
+			<span class="show-hide" ng-hide="loading || !nextToken">Show More</span>
+			<span class="show-hide" ng-show="loading"><img src="components/img/loading.gif" alt="" width="60px"></span>
+		</div>
+	</div>
+</div>

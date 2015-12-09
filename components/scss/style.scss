@@ -80,6 +80,7 @@ header{
 
 		.sub-head{
 			position:relative;
+			z-index:10;
 		}
 
 		.sub{
@@ -132,7 +133,7 @@ header{
 }
 
 .hero{
-	height:40vh;
+	height:380px;
 
 	img{
 		height:100%;
@@ -140,19 +141,32 @@ header{
 	}
 }
 
-.featured-videos{
+.featured-videos, .recent-videos{
 	margin:$sm 0;
 	padding:$sm;
 	@include span(12);
 	background-color:$white;
 
-	.video-snippet{
-		@include span(4 of 12);
+	h4{
+		margin-bottom:$sm;
+	}
+
+	.featured-snippet{
+		@include span(3 of 12);
 		clear:none;
 
-		&:nth-child(4){
+		img{
+			width:$xxl * 2;
+		}
+
+		&:nth-child(3){
 			@include last();
 		}
+	}
+
+	span{
+		text-align:center;
+		width:calc(100% - 30px);
 	}
 }
 
@@ -258,16 +272,26 @@ header{
 .right{
 	@include span(3);
 	@include last();
+	@include transition(0.3s);
 
 	h4{
 		clear:both;
+	}
+
+	&.theatreDown{
+		margin-top:645px + $reg;
 	}
 }
 
 .player{
 	background:url('img/loading.gif') no-repeat;
 	background-size: $lg;
-	background-position:38% 50%;
+	background-position:50% 50%;
+}
+
+.recentLoading, .nextLoading{
+	margin:$reg;
+	display:block;
 }
 
 .toggles{
@@ -276,17 +300,18 @@ header{
 	.toggle{
 		height:$sm + 1px;
 		width:$med;
-		background-color:$white;
+		background-color:$mid-grey;
 		float:left;
 		border-radius:$tny;
 		clear:left;
 		cursor:pointer;
 		position:relative;
-		border:1px solid $white;
+		z-index:1;
+		border:1px solid $mid-grey;
 		@include transition(0.2s);
 
 		.switch{
-			background-color:$blue;
+			background-color:$grey;
 			width:$sm - 1px;
 			height:$sm - 1px;
 			border-radius:$tny;
@@ -311,8 +336,23 @@ header{
 		font-family:$mainFont;
 		font-size:$smFontSize;
 		font-weight:normal;
-		float:right;
-		margin-top:-($mic);
+		float:left;
+		margin-left:$tny;
+		margin-top:-(1px);
+	}
+
+	.theatre{
+		width:$reg;
+		height:$sm;
+		border:2px solid $grey;
+		float:left;
+		margin-left:$sm;
+		@include transition(0.2s);
+		cursor:pointer;
+
+		&.active{
+			border-color:$blue;
+		}
 	}
 }
 
@@ -386,7 +426,24 @@ header{
 			}
 		}
 
-		.likes-num, .dislikes-num{
+		
+	}
+
+	.break{
+		clear:both;
+	}
+
+	.show-hide{
+		cursor:pointer;
+		color:$secondaryColor;
+		width:$xxl;
+		margin:$sm auto 0 auto;
+		display:block;
+		text-align:center;
+	}
+}
+
+.likes-num, .dislikes-num{
 			margin-left:$tny;
 			clear:right;
 			display:inline;
@@ -411,20 +468,44 @@ header{
 				}
 			}
 		}
-	}
-
-	.show-hide{
-		cursor:pointer;
-		color:$secondaryColor;
-		width:$xxl;
-		margin:$sm auto 0 auto;
-		display:block;
-		text-align:center;
-	}
-}
 
 
 //--------------------------Comments Section
+
+.comment-submit{
+	margin:$sm 0;
+	padding:$sm;
+	background-color:$white;
+	max-width:$largeColumnWidth;
+
+	h4{
+		margin-bottom:$sm;
+		color:$secondaryColor;
+	}
+
+	.avatar{
+		height:$lg;
+		width:$lg;
+		background-color:$black;
+		margin-right:$sm;
+		float:left;
+	}
+	textarea{
+		width:calc(100% - 75px);
+		font-family:$mainFont;
+		line-height:1.5;
+		resize:none;
+		@include transition(border-color, 0.2s);
+		height:$lg;
+		box-sizing:border-box;
+		padding:$tny;
+
+		&:focus{
+			outline:none;
+			border-color:$secondaryColor;
+		}
+	}
+}
 
 .comments{
 	margin:$sm 0;
@@ -432,12 +513,81 @@ header{
 	background-color:$white;
 	max-width:$largeColumnWidth;
 
+	h4{
+		margin-bottom:$reg;
+	}
+
 	.no-comments{
 
+	}
+
+	.comment{
+		margin-bottom: $sm + $tny;
+		clear:both;
+
+		.avatar{
+			float:left;
+			margin-right:$reg;
+		}
+
+		.comment-content{
+			float:left;
+			width:$largeColumnWidth - 110px;
+		}
+
+		.reply{
+			font-size:$smFontSize;
+			margin-right:$reg;
+		}
+
+		.thumb{
+			opacity:0.6;
+
+			&:hover{
+				opacity:0.8;
+			}
+		}
+
+		.thumb svg{
+			width:$sm + $tny;
+			fill:$light-grey;
+		}
+
+		.likeCount{
+			color:$secondaryColor;
+			font-size:$smFontSize;
+		}
+	}
+
+	.commentsLoading{
+		display:block;
+		width:100%;
+		text-align:center;
+	}
+
+	.clear{
+		clear:both;
+		display:block;
 	}
 }
 
 //------------------------Playlists Page
+
+//------------------------Search Page
+
+.search-area{
+	input[type="text"]{
+		width:100%;
+		padding:$sm;
+		font-size:$lgFontSize;
+		@include transition(0.2s);
+
+		&:focus{
+			outline:none;
+			border:1px solid $secondaryColor;
+		}
+	}
+}
 
 
 

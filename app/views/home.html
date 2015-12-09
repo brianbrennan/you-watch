@@ -10,25 +10,46 @@
 		<div class="featured-videos">
 			<h4>Featured Videos</h4>
 
-			<div class="video-snippets">
-				<div class="video-snippet">
+			<div class="featured-snippet">
+				<a ng-href="/#/videos/T2ucvZYxhMs" href="/#/videos/T2ucvZYxhMs">
+					<img src="https://i.ytimg.com/vi/T2ucvZYxhMs/mqdefault.jpg" alt="">
+					<p class="title ng-binding">A Very Grumpy Christmas</p>
+				</a>
+			</div>
+
+			<div class="featured-snippet">
+				<a ng-href="/#/videos/FiIPm44B-As" href="/#/videos/FiIPm44B-As">
+					<img src="https://i.ytimg.com/vi/FiIPm44B-As/mqdefault.jpg" alt="">
+					<p class="title ng-binding">Game Grumps Animated - Liquid Game Grumps! - by Cody Hawley</p>
+				</a>
+			</div>
+
+			<div class="featured-snippets">
+				<div class="featured-snippet">
 					<a ng-href="/#/videos/ieffffMlnGo" href="/#/videos/ieffffMlnGo">
 						<img src="https://i.ytimg.com/vi/ieffffMlnGo/mqdefault.jpg" alt="">
 						<p class="title ng-binding">Table Flip NEW EPISODE on Sling</p>
 					</a>
 				</div>
 
-				<div class="video-snippet">
+				<div class="featured-snippet">
 					<a ng-href="/#/videos/lOWUkKGZWEQ" href="/#/videos/lOWUkKGZWEQ">
 						<img src="https://i.ytimg.com/vi/lOWUkKGZWEQ/mqdefault.jpg" alt="">
 						<p class="title ng-binding">Game Grumps Animated - Liquid Game Grumps! - by Cody Hawley</p>
 					</a>
-				</div>
+				</div>	
+			</div>
+		</div>
 
-				<div class="video-snippet">
-					<a ng-href="/#/videos/raMCAvJR2Nk" href="/#/videos/raMCAvJR2Nk">
-						<img src="https://i.ytimg.com/vi/raMCAvJR2Nk/mqdefault.jpg" alt="">
-						<p class="title ng-binding">Table Flip NEW EPISODE on Sling</p>
+		<div class="recent-videos">
+			<h4>Recent Videos</h4>
+
+			<div class="featured-snippets">
+				<span ng-show="recentLoading" class="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
+				<div class="featured-snippet" ng-repeat="v in mostRecent">
+					<a ng-href="/#/videos/{{v.contentDetails.videoId}}" href="/#/videos/{{v.contentDetails.videoId}}">
+						<img src="https://i.ytimg.com/vi/{{v.contentDetails.videoId}}/mqdefault.jpg" alt="">
+						<p class="title ng-binding">{{v.snippet.title}}</p>
 					</a>
 				</div>
 			</div>

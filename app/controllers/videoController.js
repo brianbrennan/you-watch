@@ -11,9 +11,10 @@ angular.module('videoCtrl', [])
 
 				$scope.video = res.items[0];
 
+				getCookie('gamegrumpsAutoplay');
+
 				//video setup
-				$scope.autoplay = getCookie('gamegrumpsAutoplay') ? 1:0;
-				console.log($scope.autoplay);
+				$scope.autoplay = getCookie('gamegrumpsAutoplay') === 'true' ? 1 : 0;
 
 				$scope.video_id = video_id;
 				$scope.playerHeight = 480;
@@ -37,7 +38,8 @@ angular.module('videoCtrl', [])
 				sideBar();
 
 				$scope.$on('youtube.player.ended', function($event, player){
-					$location.path('/videos/' + $scope.nextVideo.id.videoId);
+					if($scope.autoplay === 1)
+						$location.path('/videos/' + $scope.nextVideo.id.videoId);
 				});
 
 
@@ -68,26 +70,50 @@ angular.module('videoCtrl', [])
 				//update header
 				checkShow();
 
-				console.log($scope.autoplay);
-
-				//set toggle
-				if($scope.autoplay == 1)
-					s(this).addClass('active');
+				//configure autoplay
+				if($scope.autoplay === 1){
+					s('.toggle').addClass('active');
+				}
 
 				s('.toggle').on('click', function(e){
 					if(s(this).hasClass('active')[0]){
 						s(this).removeClass('active');
+						setCookie('gamegrumpsAutoplay',false,2);
 					} else {
 						s(this).addClass('active');
+						setCookie('gamegrumpsAutoplay',true,2);
 					}
-
-					$scope.autoplay = s(this).hasClass('active')[0];
-
-					setCookie('gamegrumpsAutoplay',$scope.autoplay,2);
-
 					
 				});
 
+				//configure theatre mode
+
+				if(getCookie('gamegrumpsTheatreMode') === 'true'){
+					$scope.theatreMode(false);
+					s('.theatre').addClass('active');
+				}
+
+				s('.theatre').on('click', function(e){
+					if(s(this).hasClass('active')[0]){
+						$scope.theatreMode(true);
+						s(this).removeClass('active');
+					} else {
+						$scope.theatreMode(false);
+						s(this).addClass('active');
+					}
+				});
+
+
+				//configure comments
+
+				var loadedComments = true;
+
+				document.addEventListener('scroll', function(){
+					if(document.getElementsByTagName('body')[0].scrollTop > 240 && loadedComments){
+						getComments();
+						loadedComments = false;
+					}
+				});
 				
 			});
 
@@ -215,6 +241,34 @@ angular.module('videoCtrl', [])
 					$scope.nextLoading = false;
 				});
 		}
+
+		function getComments(){
+			$scope.commentsLoading = true;
+			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2creplies&videoId=' + video_id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key)
+				.success(function(res){
+					$scope.nextCommentPageToken = res.nextPageToken;
+					$scope.comments = res.items;
+
+					console.log($scope.comments);
+					$scope.commentsLoading = false;
+				});
+		}
+
+		$scope.theatreMode = function(b){
+			if(b){
+				setCookie('gamegrumpsTheatreMode', 'false', 2);
+				s('#player').css('width','854px');
+				s('#player').css('height','480px');
+				s('.right').removeClass('theatreDown');
+			} else {
+				setCookie('gamegrumpsTheatreMode', 'true', 2);
+				s('.right').addClass('theatreDown');
+				window.setTimeout(function(){
+					s('#player').css('width','1160px');
+					s('#player').css('height','652px');
+				},300);
+			}
+		};
 
 	})
 
