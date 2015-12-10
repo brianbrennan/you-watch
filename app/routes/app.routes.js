@@ -97,6 +97,18 @@ route.config(function($routeProvider, $locationProvider){
 			templateUrl: 'app/views/404.html'
 		})
 
+		.when('/access_token:anything', {
+			templateUrl: 'app/views/authScreen.html',
+			controller: 'redirectAuthController',
+			controllerAs: 'redirect'
+		})
+
+		.when('/auth', {
+			templateUrl: 'app/views/authScreen.html',
+			controller: 'authController',
+			controllerAs: 'auth'
+		})
+
 		.when('/:anything', {
 			templateUrl: 'app/views/404.html'
 		})
