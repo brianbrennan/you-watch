@@ -447,7 +447,7 @@ header{
 	margin-left:$tny;
 	clear:right;
 	display:inline;
-	
+
 	.thumb{
 		cursor:pointer;
 		opacity:0.8;
@@ -460,6 +460,7 @@ header{
 		}
 
 		&.active{
+			opacity:1;
 			path{
 				fill:$secondaryColor;
 			}
@@ -557,6 +558,10 @@ header{
 
 			&:hover{
 				opacity:0.8;
+			}
+
+			&.active{
+				opacity:1;
 			}
 		}
 

@@ -135,6 +135,8 @@ angular.module('videoCtrl', [])
 				document.addEventListener('scroll', function(){
 					if(document.getElementsByTagName('body')[0].scrollTop > 240 && loadedComments){
 						getComments();
+
+
 						loadedComments = false;
 					}
 				});
@@ -277,8 +279,8 @@ angular.module('videoCtrl', [])
 					$scope.nextCommentPageToken = res.nextPageToken;
 					$scope.comments = res.items;
 
+					setLikeListeners();
 
-					console.log(res);
 					$scope.commentsLoading = false;
 				});
 		}
@@ -327,6 +329,13 @@ angular.module('videoCtrl', [])
 				});
 		};
 
+		$scope.convertTime = function(time){
+			var now = new Date;
+			var time = new Date(time);
+
+			return time.getFullYear;
+		};
+
 		$scope.theatreMode = function(b){
 			if(b){
 				setCookie('gamegrumpsTheatreMode', 'false', 2);
@@ -345,7 +354,12 @@ angular.module('videoCtrl', [])
 
 		$scope.getUser = function(){
 			if($rootScope.isAuth()){
+				$http.get('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'))
 
+					.success(function(res){
+						$scope.user = res.items[0];
+						console.log(res);
+					});
 			}
 		};
 
@@ -376,6 +390,46 @@ angular.module('videoCtrl', [])
 				$http.post('https://www.googleapis.com/youtube/v3/videos/rate?id=' + video_id + '&rating=' + rating + '&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'));
 			}
 		};
+
+		$scope.rateComment = function(i, c){
+			$rootScope.checkAuth();
+
+			if($rootScope.isAuth()){
+				var rating;
+
+
+				s('#' + $scope.comments[c].id);
+
+				if($scope.comments[c].rated == 'like' && i == 1){
+					rating = 'none';
+					$scope.comments[c].rated = 'none';
+					s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
+				} else if($scope.comments[c].rated == 'dislike' && i != 1){
+					rating = 'none';
+					$scope.comments[c].rated = 'none';
+					s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
+				} else {
+					if(i == 1){
+						rating = 'like';
+						$scope.comments[c].rated = 'like';
+						s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
+						s('#' + $scope.comments[c].id + ' .likes-num .thumb').addClass('active');
+					} else {
+						rating = 'dislike';
+						$scope.comments[c].rated = 'dislike';
+						s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
+						s('#' + $scope.comments[c].id + ' .dislikes-num .thumb').addClass('active');
+					}
+				}
+
+
+				
+			}
+		};
+
+		function setLikeListeners(){
+				
+		}
 
 	})
 
