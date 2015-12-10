@@ -7,7 +7,12 @@
 
 		<div class="results">
 				<div class="video-snippet" ng-repeat="v in results.items">
-					<a ng-href="/#/videos/{{v.id.videoId}}">
+					<a ng-href="/#/videos/{{v.id.videoId}}" ng-show="v.id.videoId">
+						<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
+						<p class="title">{{v.snippet.title}}</p>
+					</a>
+
+					<a ng-href="/#/playlists/{{v.id.playlistId}}" ng-show="v.id.playlistId">
 						<img src="{{v.snippet.thumbnails.medium.url}}" alt="">
 						<p class="title">{{v.snippet.title}}</p>
 					</a>

@@ -1,6 +1,8 @@
 angular.module('searchCtrl', [])
 
-	.controller('searchController', function($scope, $http){
+	.controller('searchController', function($scope, $http, $rootScope){
+
+		$rootScope.pageTitle = 'JonTron can\'t melt steel beams';
 		$scope.findQuery = function(){
 			$scope.searchLoading = true;
 			if($scope.searchQuery.length > 1){
