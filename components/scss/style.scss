@@ -444,30 +444,37 @@ header{
 }
 
 .likes-num, .dislikes-num{
-			margin-left:$tny;
-			clear:right;
-			display:inline;
-			.thumb{
-				cursor:pointer;
-				opacity:0.8;
-				svg{
-					margin-bottom: -(5px);
-				}
-
-				&:hover{
-					opacity:1;
-				}
-			}
+	margin-left:$tny;
+	clear:right;
+	display:inline;
+	
+	.thumb{
+		cursor:pointer;
+		opacity:0.8;
+		svg{
+			margin-bottom: -(5px);
 		}
 
-		.dislikes-num{
-			.thumb{
-				svg{
-					@include transform(rotate(180deg));
-					margin-bottom:-($tny);
-				}
+		&:hover{
+			opacity:1;
+		}
+
+		&.active{
+			path{
+				fill:$secondaryColor;
 			}
 		}
+	}
+}
+
+.dislikes-num{
+	.thumb{
+		svg{
+			@include transform(rotate(180deg));
+			margin-bottom:-($tny);
+		}
+	}
+}
 
 
 //--------------------------Comments Section

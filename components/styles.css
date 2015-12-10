@@ -366,6 +366,8 @@ header {
       margin-bottom: -5px; }
     .likes-num .thumb:hover, .dislikes-num .thumb:hover {
       opacity: 1; }
+    .likes-num .thumb.active path, .dislikes-num .thumb.active path {
+      fill: #3E92A3; }
 
 .dislikes-num .thumb svg {
   -webkit-transform: rotate(180deg);

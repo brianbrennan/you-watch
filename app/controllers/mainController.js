@@ -28,16 +28,14 @@ angular.module('mainCtrl', [])
 
 		$rootScope.isAuth = function(){
 
-			if($rootScope.getCookie('ggAuthenticaion'))
+			if($rootScope.getCookie('ggAuthentication'))
 				return true;
 			else
 				return false;
 		};
 
 		$rootScope.checkAuth = function(){
-			if($rootScope.isAuth()){
-
-			} else {
+			if(!$rootScope.isAuth()){
 				$rootScope.setCookie('ggLastPage', $location.path(), 1);
 				window.location='https://accounts.google.com/o/oauth2/auth?client_id=' + $scope.settings.client_id + '&redirect_uri=http%3A%2F%2Flocalhost%3A8000&response_type=token&scope=https%3A%2F%2Fwww%2Egoogleapis%2Ecom%2Fauth%2Fyoutube%2Eforce-ssl';
 			}

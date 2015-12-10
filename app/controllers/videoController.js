@@ -111,6 +111,22 @@ angular.module('videoCtrl', [])
 					}
 				});
 
+				//configure user
+
+				$scope.getUser();
+
+				//configure rating
+
+				s('.vid-info .thumb').on('click', function(e){
+					console.log('res');
+					if(s(this).hasClass('active')[0])
+						s(this).removeClass('active');
+					else{
+						s('.vid-info .thumb').removeClass('active');
+						s(this).addClass('active');
+					}
+				});
+
 
 				//configure comments
 
@@ -240,10 +256,11 @@ angular.module('videoCtrl', [])
 		}
 
 		function getNextVideo(){
-			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $scope.settings.channelId +'&maxResults=5&type=video&key=' + $scope.settings.api_key)
+			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + $scope.settings.channelId + '&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $scope.settings.channelId +'&maxResults=5&type=video&key=' + $scope.settings.api_key)
 
 				.success(function(res){
-					$scope.nextVideo = res.items[0];
+					if(res.items[0].snippet.channelId == $scope.settings.channelId)
+						$scope.nextVideo = res.items[0];
 					$scope.relatedVideos = [];
 					for(var i = 1; i < res.items.length; i++){
 						if(res.items[i].snippet.channelId == $scope.settings.channelId)
@@ -326,8 +343,38 @@ angular.module('videoCtrl', [])
 			}
 		};
 
+		$scope.getUser = function(){
+			if($rootScope.isAuth()){
+
+			}
+		};
+
+		var vidRated = false;
+
 		$scope.rate = function(i){
 			$rootScope.checkAuth();
+
+			if($rootScope.isAuth()){
+
+				var rating;
+
+
+				if(vidRated){
+					rating = 'none';
+					vidRated = false;
+				} else {
+					if(i == 1){
+						rating = 'like';
+						vidRated = true;
+					}
+					else if(i == 0){
+						rating = 'dislike';
+						vidRated = true;
+					}
+				}
+
+				$http.post('https://www.googleapis.com/youtube/v3/videos/rate?id=' + video_id + '&rating=' + rating + '&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'));
+			}
 		};
 
 	})
