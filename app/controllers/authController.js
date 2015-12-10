@@ -15,6 +15,7 @@ angular.module('authCtrl', [])
 				}
 
 				console.log(res);
+				console.log($rootScope.getCookie('ggLastPage'));
 
 				$rootScope.setCookie('ggAuthentication', token.access_token, (1 / 24));
 				$location.url($rootScope.getCookie('ggLastPage'));

@@ -29,8 +29,6 @@ angular.module('mainCtrl', [])
 		$rootScope.isAuth = function(){
 
 			if($rootScope.getCookie('ggAuthentication')){
-
-				if()
 				return true;
 			}
 			else

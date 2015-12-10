@@ -13,7 +13,7 @@ $susy: (
 );
 
 
-//--------------------------------------------Styles
+//-------------------------f-------------------Styles
 
 *{
 	box-sizing:border-box;
@@ -255,6 +255,10 @@ header{
 	}
 	&:nth-last-child(3){
 		margin-bottom:$sm;
+	}
+
+	img{
+		width:100%;
 	}
 }
 
@@ -661,15 +665,31 @@ header{
 
 .search-area{
 	input[type="text"]{
-		width:100%;
+		@include span(10);
 		padding:$sm;
 		font-size:$lgFontSize;
 		@include transition(0.2s);
+		border:1px solid $grey;
 
 		&:focus{
 			outline:none;
 			border:1px solid $secondaryColor;
 		}
+	}
+
+	.submitSearch{
+		@include span(2);
+		@include last();
+		height:$lg;
+		margin-top:$mic;
+		background-color:$blue;
+		color:$white;
+		font-family:$headlineFont;
+		font-size:$medFontSize;
+		border:none;
+		cursor:pointer;
+		text-align:center;
+		line-height:$lg - $mic;
 	}
 }
 
