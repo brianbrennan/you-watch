@@ -279,8 +279,6 @@ angular.module('videoCtrl', [])
 					$scope.nextCommentPageToken = res.nextPageToken;
 					$scope.comments = res.items;
 
-					setLikeListeners();
-
 					$scope.commentsLoading = false;
 				});
 		}
@@ -391,45 +389,41 @@ angular.module('videoCtrl', [])
 			}
 		};
 
-		$scope.rateComment = function(i, c){
+		$scope.newComment = function(){
 			$rootScope.checkAuth();
 
 			if($rootScope.isAuth()){
-				var rating;
+				var snippet = {};
+
+				snippet.channelId = $scope.user.id;
+				snippet.topLevelComment = {};
+				snippet.topLevelComment.snippet = {};
+				snippet.topLevelComment.snippet.textOriginal = $scope.postingComment;
+
+				snippet.videoId = video_id;
+
+				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), snippet)
+
+					.success(function(res){
+						console.log(res);
+					});
 
 
-				s('#' + $scope.comments[c].id);
+			}
+		};
 
-				if($scope.comments[c].rated == 'like' && i == 1){
-					rating = 'none';
-					$scope.comments[c].rated = 'none';
-					s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
-				} else if($scope.comments[c].rated == 'dislike' && i != 1){
-					rating = 'none';
-					$scope.comments[c].rated = 'none';
-					s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
-				} else {
-					if(i == 1){
-						rating = 'like';
-						$scope.comments[c].rated = 'like';
-						s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
-						s('#' + $scope.comments[c].id + ' .likes-num .thumb').addClass('active');
-					} else {
-						rating = 'dislike';
-						$scope.comments[c].rated = 'dislike';
-						s('#' + $scope.comments[c].id + ' .thumb').removeClass('active');
-						s('#' + $scope.comments[c].id + ' .dislikes-num .thumb').addClass('active');
-					}
-				}
+		$scope.newReply = function(p){
+			$scope.checkAuth();
 
+			if($rootScope.isAuth()){
+				var snippet = {};
+
+				snippet.textOriginal = $scope.postingReply;
+				snippet.parentId = p;
 
 				
 			}
 		};
-
-		function setLikeListeners(){
-				
-		}
 
 	})
 

@@ -513,6 +513,21 @@ header{
 			border-color:$secondaryColor;
 		}
 	}
+
+	.postComment{
+		float:right;
+		margin-top:$tny;
+		background-color:$blue;
+		border:none;
+		color:$white;
+		font-size:$regFontSize;
+		padding:$tny $sm;
+		cursor:pointer;
+	}
+
+	.clear{
+		clear:both;
+	}
 }
 
 .comments{

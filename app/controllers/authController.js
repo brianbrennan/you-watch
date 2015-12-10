@@ -14,7 +14,9 @@ angular.module('authCtrl', [])
 					return;
 				}
 
-				$rootScope.setCookie('ggAuthentication', token.access_token + ';ggExpires=' + res.expires_in + ';ggIssued=' + Date.now(), res.expires_in / 60 / 24);
+				console.log(res);
+
+				$rootScope.setCookie('ggAuthentication', token.access_token, (1 / 24));
 				$location.url($rootScope.getCookie('ggLastPage'));
 			});
 	});

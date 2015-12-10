@@ -43,7 +43,11 @@
 
 				<img src="{{user.snippet.thumbnails.default.url}}" alt="" class="avatar">
 
-				<textarea class="comment-textarea" placeholder="Go ahead and write a comment"></textarea>
+				<textarea class="comment-textarea" placeholder="Go ahead and write a comment" ng-model="postingComment"></textarea>
+
+				<button class="postComment" ng-show="postingComment.length" ng-click="newComment()">Post</button>
+
+				<div class="clear"></div>
 			</div>
 
 			<div class="comments">

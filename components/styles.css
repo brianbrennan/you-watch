@@ -407,6 +407,17 @@ header {
     .comment-submit textarea:focus {
       outline: none;
       border-color: #3E92A3; }
+  .comment-submit .postComment {
+    float: right;
+    margin-top: 8px;
+    background-color: #5186FC;
+    border: none;
+    color: #FFF;
+    font-size: 16px;
+    padding: 8px 15px;
+    cursor: pointer; }
+  .comment-submit .clear {
+    clear: both; }
 
 .comments {
   margin: 15px 0;
