@@ -418,10 +418,15 @@ angular.module('videoCtrl', [])
 					}
 				}
 
-				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), data)
+				data.snippet.topLevelComment.snippet.textDisplay = data.snippet.topLevelComment.snippet.textOriginal;
+				console.log(data);
+				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id +'&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), data)
 
 					.success(function(res){
-						console.log(res);
+						if(!$scope.comments)
+							getComments();
+						$scope.comments.unshift(res);
+						$scope.postingComment = '';
 					});
 
 
