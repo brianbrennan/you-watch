@@ -81,13 +81,13 @@ angular.module('videoCtrl', [])
 				s('.toggle').on('click', function(e){
 					if(s(this).hasClass('active')[0]){
 						s(this).removeClass('active');
-						setCookie('gamegrumpsAutoplay',false,2);
+						$rootScope.setCookie('gamegrumpsAutoplay',false,2);
 
 					} else {
 						s(this).addClass('active');
 						setCookie('gamegrumpsAutoplay',true,2);
 						$scope.$on('youtube.player.ended', function($event, player){
-							if($scope.autoplay === 1)
+							if($rootScope.getCookie('gamegrumpsAutoplay') == 'true')
 								$location.path('/videos/' + $scope.nextVideo.id.videoId);
 						});
 					}
@@ -138,6 +138,18 @@ angular.module('videoCtrl', [])
 
 
 						loadedComments = false;
+					}
+				});
+
+				//configure fullScreen Mode
+
+				s('.ytp-fullscreen-button').on('click', function(){
+					console.log('test');
+					if(!$rootScope.getCookie('fullScreenMode') || !$rootScope.getCookie('fullScreenMode') == 'false'){
+
+						$scope.fullScreen(true);
+					} else {
+						$scope.fullScreen(true);
 					}
 				});
 				
@@ -393,16 +405,20 @@ angular.module('videoCtrl', [])
 			$rootScope.checkAuth();
 
 			if($rootScope.isAuth()){
-				var snippet = {};
+				
+				var data = {
+					"snippet": {
+						"videoId": video_id,
+						"channelId": $scope.user.channelId,
+						"topLevelComment": {
+							"snippet": {
+								textOriginal: $scope.postingComment
+							}
+						}
+					}
+				}
 
-				snippet.channelId = $scope.user.id;
-				snippet.topLevelComment = {};
-				snippet.topLevelComment.snippet = {};
-				snippet.topLevelComment.snippet.textOriginal = $scope.postingComment;
-
-				snippet.videoId = video_id;
-
-				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), snippet)
+				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), data)
 
 					.success(function(res){
 						console.log(res);
@@ -422,6 +438,14 @@ angular.module('videoCtrl', [])
 				snippet.parentId = p;
 
 				
+			}
+		};
+
+		$scope.fullScreen = function(d){
+			if(d){
+				$rootScope.setCookie('fullscreenMode','true');
+			} else {
+				$rootScope.setCookie('fullscreenMode','false');
 			}
 		};
 
