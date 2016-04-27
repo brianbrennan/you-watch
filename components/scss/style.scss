@@ -484,7 +484,7 @@ header{
 
 //--------------------------Comments Section
 
-.comment-submit{
+.comment-submit, .reply-box{
 	margin:$sm 0;
 	padding:$sm;
 	background-color:$white;
@@ -498,8 +498,9 @@ header{
 	.avatar{
 		height:$lg;
 		width:$lg;
-		background-color:$black;
+		background-color:$secondaryColor;
 		margin-right:$sm;
+		border:none;
 		float:left;
 	}
 	textarea{
@@ -518,7 +519,7 @@ header{
 		}
 	}
 
-	.postComment{
+	.postComment, .cancelComment{
 		float:right;
 		margin-top:$tny;
 		background-color:$blue;
@@ -527,6 +528,12 @@ header{
 		font-size:$regFontSize;
 		padding:$tny $sm;
 		cursor:pointer;
+	}
+
+	.cancelComment{
+		background-color:$light-grey;
+		color:$dark;
+		margin-right:$sm;
 	}
 
 	.clear{
@@ -622,6 +629,18 @@ header{
 		font-weight:bold;
 		font-size:$smFontSize;
 		cursor:pointer;
+	}
+}
+
+.reply-prompt{
+	color:$secondaryColor;
+	cursor:pointer;
+	font-size:$smFontSize;
+}
+
+.reply-box{
+	textarea{
+		width:100%;
 	}
 }
 

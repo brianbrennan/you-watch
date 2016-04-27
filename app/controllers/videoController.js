@@ -426,6 +426,7 @@ angular.module('videoCtrl', [])
 						if(!$scope.comments)
 							getComments();
 						$scope.comments.unshift(res);
+						console.log($scope.comments);
 						$scope.postingComment = '';
 					});
 

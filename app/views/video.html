@@ -62,8 +62,18 @@
 					<div class="comment-content" >
 						<p class="author">{{c.snippet.topLevelComment.snippet.authorDisplayName}}</p>
 						<span class="time">{{c.convertedTime}}</span>
-						<p ng-bind-html="c.snippet.topLevelComment.snippet.textDisplay | unsafe"></p>
-						<span class="reply">Reply</span>
+						<p ng-bind-html="c.snippet.topLevelComment.snippet.textOriginal | unsafe" ng-hide="c.snippet.topLevelComment.snippet.textDisplay"></p>
+						<span class="reply-prompt" ng-click="replying = true" ng-hide="replying">Reply</span>
+
+						<div class="reply-box" ng-show="replying">
+
+							<textarea class="comment-textarea" placeholder="Go ahead and write a reply" ng-model="postingReply"></textarea>
+
+							<button class="postComment" ng-show="postingReply.length" ng-click="newReply(c.id)">Post</button>
+							<button class="cancelComment" ng-show="postingReply.length" ng-click="replying = false;">Cancel</button>
+
+							<div class="clear"></div>
+						</div>
 
 					<span class="viewReplies" ng-click="getReplies($index)" ng-hide="c.replies || c.snippet.totalReplyCount == 0">
 						View {{c.snippet.totalReplyCount}} Replies
@@ -78,7 +88,17 @@
 								<p class="author">{{r.snippet.authorDisplayName}}</p>
 								<p ng-bind-html="r.snippet.textDisplay | unsafe"></p>
 
-								<span class="reply">Reply</span>
+								<span class="reply-prompt" ng-click="replying = true" ng-hide="replying">Reply</span>
+
+								<div class="reply-box" ng-show="replying">
+
+									<textarea class="comment-textarea" placeholder="Go ahead and write a reply" ng-model="postingReply"></textarea>
+
+									<button class="postComment" ng-show="postingReply.length" ng-click="newReply(r.id)">Post</button>
+									<button class="cancelComment" ng-show="postingReply.length" ng-click="replying = false;">Cancel</button>
+
+									<div class="clear"></div>
+								</div>
 							</div>
 
 							<div class="clear"></div>

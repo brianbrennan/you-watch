@@ -381,21 +381,22 @@ header {
   transform: rotate(180deg);
   margin-bottom: -8px; }
 
-.comment-submit {
+.comment-submit, .reply-box {
   margin: 15px 0;
   padding: 15px;
   background-color: #FFF;
   max-width: 854px; }
-  .comment-submit h4 {
+  .comment-submit h4, .reply-box h4 {
     margin-bottom: 15px;
     color: #3E92A3; }
-  .comment-submit .avatar {
+  .comment-submit .avatar, .reply-box .avatar {
     height: 60px;
     width: 60px;
-    background-color: #555;
+    background-color: #3E92A3;
     margin-right: 15px;
+    border: none;
     float: left; }
-  .comment-submit textarea {
+  .comment-submit textarea, .reply-box textarea {
     width: calc(100% - 75px);
     font-family: 'Open Sans', sans-serif;
     line-height: 1.5;
@@ -406,10 +407,10 @@ header {
     height: 60px;
     box-sizing: border-box;
     padding: 8px; }
-    .comment-submit textarea:focus {
+    .comment-submit textarea:focus, .reply-box textarea:focus {
       outline: none;
       border-color: #3E92A3; }
-  .comment-submit .postComment {
+  .comment-submit .postComment, .comment-submit .cancelComment, .reply-box .postComment, .reply-box .cancelComment {
     float: right;
     margin-top: 8px;
     background-color: #5186FC;
@@ -418,7 +419,11 @@ header {
     font-size: 16px;
     padding: 8px 15px;
     cursor: pointer; }
-  .comment-submit .clear {
+  .comment-submit .cancelComment, .reply-box .cancelComment {
+    background-color: #EEE;
+    color: #2c3e50;
+    margin-right: 15px; }
+  .comment-submit .clear, .reply-box .clear {
     clear: both; }
 
 .comments {
@@ -476,6 +481,14 @@ header {
     font-weight: bold;
     font-size: 13px;
     cursor: pointer; }
+
+.reply-prompt {
+  color: #3E92A3;
+  cursor: pointer;
+  font-size: 13px; }
+
+.reply-box textarea {
+  width: 100%; }
 
 .replies {
   margin-left: 90px;
