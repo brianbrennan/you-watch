@@ -9,33 +9,6 @@
 		</div>
 
 		<h5>Theatre Mode</h5>
-	<!-- </div>
-	<h4 ng-show="videoc.nextVideo">What's Up Next</h4>
-	<span ng-show="videoc.nextLoading" class="nextLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
-	<div class="next-video-snippet">
-		<a ng-href="/#/videos/{{videoc.nextVideo.id.videoId}}">
-			<img src="{{videoc.nextVideo.snippet.thumbnails.default.url}}" alt="">
-			{{videoc.nextVideo.snippet.title}}
-		</a>
-	</div>
-	<h4 ng-show="videoc.relatedVideos.length > 0">Related Videos</h4>
-	<span ng-show="videoc.nextLoading" class="relatedLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
-	<div class="related-video-snippet" ng-repeat="r in videoc.relatedVideos">
-		<a ng-href="/#/videos/{{r.id.videoId}}">
-			<img src="{{r.snippet.thumbnails.default.url}}" alt="">
-			{{r.snippet.title}}
-		</a>
-	</div>
-	<h4>Recent Uploads</h4>
-	<span ng-show="videoc.recentLoading" class="recentLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
-	<div class="recent-video-snippets">
-		<div class="recent-video-snippet" ng-repeat="v in videoc.recentVideos">
-			<a ng-href="/#/videos/{{v.snippet.resourceId.videoId}}">
-				<img src="{{v.snippet.thumbnails.default.url}}" alt="">
-				{{v.snippet.title}}
-			</a>
-		</div>
-	</div> -->
 
 	<video-snippet-sidebar videos="whatsUpNext">What's Up Next</video-snippet-sidebar>
 	<video-snippet-sidebar videos="relatedVideos">Related Videos</video-snippet-sidebar>
