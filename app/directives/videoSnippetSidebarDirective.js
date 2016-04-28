@@ -40,9 +40,15 @@
 			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + $rootScope.settings.channelId + '&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $rootScope.settings.channelId +'&maxResults=5&type=video&key=' + $rootScope.settings.api_key)
 
 				.success(function(res){
-					if(res.items[0].snippet.channelId == $rootScope.settings.channelId)
-						vm.videos[0] = res.items[0];
-					vm.snippetLoading = false;
+					for(var i = 0; i < res.items.length; i++){
+						if(res.items[i].snippet.channelId == $rootScope.settings.channelId){
+							vm.videos[0] = res.items[i];
+							vm.videos[0].videoLink = vm.videos[0].id.videoId;
+							vm.snippetLoading = false;
+							break;
+						}
+					}
+					
 				});
 		}
 
@@ -50,9 +56,13 @@
 			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + $rootScope.settings.channelId + '&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $rootScope.settings.channelId +'&maxResults=5&type=video&key=' + $rootScope.settings.api_key)
 
 			.success(function(res){
+				var correctIndex = 0;//sometimes related videos return things from other channels
 				for(var i = 1; i < res.items.length; i++){
-					if(res.items[i].snippet.channelId == $rootScope.settings.channelId)
+					if(res.items[i].snippet.channelId == $rootScope.settings.channelId){
 						vm.videos.push(res.items[i]);
+						vm.videos[correctIndex].videoLink = res.items[i].id.videoId;
+						correctIndex++;
+					}
 				}
 				vm.snippetLoading = false;
 			});
@@ -67,6 +77,7 @@
 
 				for(var i = 0; i < res.items.length; i++){
 					vm.videos.push(res.items[i]);
+					vm.videos[i].videoLink = res.items[i].snippet.resourceId.videoId;
 				}
 
 				vm.snippetLoading = false;

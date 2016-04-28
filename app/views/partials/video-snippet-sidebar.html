@@ -3,7 +3,7 @@
 <span ng-show="videoSnippet.snippetLoading" class="snippetLoading"><img src="components/img/loading.gif" alt="" width="60px"></span>
 <div class="recent-video-snippets">
 	<div class="recent-video-snippet" ng-repeat="v in videoSnippet.videos">
-		<a ng-href="/#/videos/{{v.snippet.resourceId.videoId}}">
+		<a ng-href="/#/videos/{{v.videoLink}}">
 			<img src="{{v.snippet.thumbnails.default.url}}" alt="">
 			{{v.snippet.title}}
 		</a>
