@@ -74,6 +74,8 @@
 		}	
 	}
 
+
+	//function for directive
 	function videoSnippetSidebar(){
 		return {
 			restrict: 'EA',

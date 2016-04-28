@@ -56,7 +56,7 @@ function videoController($http, $scope, $location, $sce, $rootScope){
 			//set up the infoBox under the video player
 			vm.infoBox();
 
-			//update header
+			//update header color to match show
 			vm.checkShow();
 
 			//configure theatre mode (calls to check if in theatre mode inside function)
@@ -425,8 +425,6 @@ function videoController($http, $scope, $location, $sce, $rootScope){
 					$scope.comments.unshift(res);
 					$scope.postingComment = '';
 				});
-
-
 		}
 	};
 
