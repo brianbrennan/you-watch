@@ -16,7 +16,7 @@ route.config(function($routeProvider, $locationProvider){
 		.when('/videos/:video_id', {
 			templateUrl: 'app/views/video.html',
 			controller: 'videoController',
-			controllerAs: 'video'
+			controllerAs: 'videoc'
 		})
 
 		.when('/playlists/', {

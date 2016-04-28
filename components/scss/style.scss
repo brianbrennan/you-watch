@@ -275,6 +275,7 @@ header{
 
 .right{
 	@include span(3);
+	display:block;
 	@include last();
 	@include transition(0.3s);
 

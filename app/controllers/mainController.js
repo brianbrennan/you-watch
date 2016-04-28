@@ -6,7 +6,7 @@ angular.module('mainCtrl', [])
 
 		$http.get('app/model/settings.json')
 			.success(function(res){
-				$scope.settings = res;
+				$rootScope.settings = res;
 			});
 
 		s('.sub-head')

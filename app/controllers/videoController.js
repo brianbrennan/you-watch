@@ -1,487 +1,507 @@
+(function(){
 angular.module('videoCtrl', [])
 
-	.controller('videoController', function($http, $scope, $location, $sce, $rootScope){
+	.controller('videoController', videoController)
+
+	.filter('unsafe', unsafeFilter);
 
 
+function videoController($http, $scope, $location, $sce, $rootScope){
 
-		var video_id = $location.path().substr(8,$location.path().length - 1);
+	var vm = this;
 
-		$http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet%2cstatistics&id=' + video_id + '&key=' + $scope.settings.api_key)
+	var video_id = $location.path().substr(8,$location.path().length - 1);
 
-			.success(function(res){
+	$http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet%2cstatistics&id=' + video_id + '&key=' + $scope.settings.api_key)
 
-				$scope.video = res.items[0];
-				$rootScope.pageTitle = $scope.video.snippet.title;
+		.success(function(res){
 
-				if($scope.video.snippet.channelId != $scope.settings.channelId)
-					$location.path('/404');
+			
+			//all video information
+			vm.video = res.items[0];
 
-				//video setup
-				$scope.autoplay = getCookie('gamegrumpsAutoplay') === 'true' ? 1 : 0;
+			//Make sure that the youtube id is valid, compared to channel ID in settings
+			//Must be before other member declarations but AFTER the video declaration
+			vm.checkPage();
 
-				$scope.video_id = video_id;
-				$scope.playerHeight = 480;
-				$scope.playerWidth = 854;
-				$scope.playerVars = {
-					'showinfo': 0,
-					'autoplay': $scope.autoplay
-				};
+			//video setup
+			vm.autoplay = getCookie('gamegrumpsAutoplay') === 'true' ? 1 : 0;
 
-				// console.log($scope.video);
+			vm.video_id = video_id;
+			vm.playerHeight = 480;
+			vm.playerWidth = 854;
+			vm.playerVars = {
+				'showinfo': 0,
+				'autoplay': vm.autoplay
+			};
 
-				//Give a formatted date for the view
-				setPublishAtDate();
+			/*Formatting for the numbers on the page to be more easily legible to humans*/
+			vm.video.statistics.viewCount = vm.numberWithCommas(vm.video.statistics.viewCount);
+			vm.video.statistics.likeCount = vm.numberWithCommas(vm.video.statistics.likeCount);
+			vm.video.statistics.dislikeCount = vm.numberWithCommas(vm.video.statistics.dislikeCount);
 
-				//Formats Description
-				preserveDescription();
+			//Sidebar loading
+			vm.recentLoading = true;
+			vm.nextLoading = true;
 
-				//Sidebar loading
-				$scope.recentLoading = true;
-				$scope.nextLoading = true;
-				sideBar();
+			//Give a formatted date for the view
+			vm.setPublishAtDate();
 
+			//Formats Description
+			vm.preserveDescription();
+
+			//sets up autoplay on video ending
+			vm.setAutoplay();
+
+			//set up the infoBox under the video player
+			vm.infoBox();
+
+			//update header
+			vm.checkShow();
+
+			//configure theatre mode (calls to check if in theatre mode inside function)
+			vm.theatreToggle();
+
+			//configure user
+			vm.getUser();
+
+			//configure rating
+			vm.configRating();
+
+			//configure comments
+			vm.configComments();
+
+			//configure fullScreen Mode to continue being fullscreen during autoplay mode(currently not working yet)
+			vm.configFullscreen();
+
+		});
+
+
+	vm.checkPage = function(){
+
+		$rootScope.pageTitle = vm.video.snippet.title;
+
+		if(typeof vm.video == 'undefined' || vm.video.snippet.channelId != $rootScope.settings.channelId)
+			$location.path('/404');
+	}
+
+
+	vm.setPublishAtDate = function(){
+		var date = new Date(vm.video.snippet.publishedAt);
+
+		var formattedDate = '';
+
+		switch(date.getMonth()){
+			case 0:
+				formattedDate = 'January';
+				break;
+			case 1:
+				formattedDate = 'February';
+				break;
+			case 2:
+				formattedDate = 'March';
+				break;
+			case 3:
+				formattedDate = 'April';
+				break;
+			case 4:
+				formattedDate = 'May';
+				break;
+			case 5:
+				formattedDate = 'June';
+				break;
+			case 6:
+				formattedDate = 'July';
+				break;
+			case 7:
+				formattedDate = 'August';
+				break;
+			case 8:
+				formattedDate = 'September';
+				break;
+			case 9:
+				formattedDate = 'October';
+				break;
+			case 10:
+				formattedDate = 'November';
+				break;
+			case 11:
+				formattedDate = 'December';
+				break;
+		}
+
+		formattedDate = formattedDate + ' ' + date.getDate() + ', ' + date.getFullYear();
+
+		vm.video.snippet.publishedAt = formattedDate;
+	};
+
+
+	vm.preserveDescription = function(){
+		var description = vm.video.snippet.description;
+
+		description = vm.preserveLinks(description);
+
+		description = description.replace(/\n/g, "<br>");
+
+		vm.video.snippet.description = description;
+	};
+
+
+	vm.preserveLinks = function(d){
+		d = d.replace( /(http:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
+		d = d.replace( /(https:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
+
+		return d;
+	}
+
+
+	vm.numberWithCommas = function(x){
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	};
+
+
+	vm.checkShow = function(){
+		var title = vm.video.snippet.title;
+
+		if(title.indexOf('Grumpcade') >= 0){
+			s('header').addClass('grumpcade');
+		} else if(title.indexOf('Steam Train') >= 0){
+			s('header').addClass('steam-train');
+		} else if(title.indexOf('Table Flip') >= 0){
+			s('header').addClass('table-flip');
+		} else {
+			s('header').removeClass();
+		}
+	};
+
+
+	vm.setAutoplay = function(){
+		/*
+		$scope is required here because the event is triggered 
+		by the youtube player in the view, which I have little 
+		control over without a lot of overhaul
+		*/
+		$scope.$on('youtube.player.ended', function($event, player){
+			if(vm.autoplay === 1)
+				$location.path('/videos/' + vm.nextVideo.id.videoId);
+		});
+
+		//configure autoplay toggle
+		if(vm.autoplay === 1){
+			s('.toggle').addClass('active');
+		}
+
+		s('.toggle').on('click', function(e){
+			if(s(this).hasClass('active')[0]){
+				s(this).removeClass('active');
+				$rootScope.setCookie('gamegrumpsAutoplay',false,2);
+
+			} else {
+				s(this).addClass('active');
+				setCookie('gamegrumpsAutoplay',true,2);
 				$scope.$on('youtube.player.ended', function($event, player){
-					if($scope.autoplay === 1)
-						$location.path('/videos/' + $scope.nextVideo.id.videoId);
+					if($rootScope.getCookie('gamegrumpsAutoplay') == 'true')
+						$location.path('/videos/' + vm.nextVideo.id.videoId);
 				});
-
-
-				s('.show-hide').on('click', function(){
-					if(s('.description').hasClass('full')[0]){
-						s('.description').removeClass('full');
-						s(this).innerHtml('Show More');
-					} else {
-						s('.description').addClass('full');
-						s(this).innerHtml('Hide');
-					}
-				});
-
-				
-				var likes = Number($scope.video.statistics.likeCount);
-				var total = Number($scope.video.statistics.dislikeCount) + likes;
-
-				likeRatio = likes / total * 100;
-
-				s('.like-bar').css('width', String(likeRatio + '%'));
-
-
-				$scope.video.statistics.viewCount = numberWithCommas($scope.video.statistics.viewCount);
-				$scope.video.statistics.likeCount = numberWithCommas($scope.video.statistics.likeCount);
-				$scope.video.statistics.dislikeCount = numberWithCommas($scope.video.statistics.dislikeCount);
-
-
-				//update header
-				checkShow();
-
-				//configure autoplay
-				if($scope.autoplay === 1){
-					s('.toggle').addClass('active');
-				}
-
-				s('.toggle').on('click', function(e){
-					if(s(this).hasClass('active')[0]){
-						s(this).removeClass('active');
-						$rootScope.setCookie('gamegrumpsAutoplay',false,2);
-
-					} else {
-						s(this).addClass('active');
-						setCookie('gamegrumpsAutoplay',true,2);
-						$scope.$on('youtube.player.ended', function($event, player){
-							if($rootScope.getCookie('gamegrumpsAutoplay') == 'true')
-								$location.path('/videos/' + $scope.nextVideo.id.videoId);
-						});
-					}
-					
-				});
-
-				//configure theatre mode
-
-				if(getCookie('gamegrumpsTheatreMode') === 'true'){
-					$scope.theatreMode(false);
-					s('.theatre').addClass('active');
-				}
-
-				s('.theatre').on('click', function(e){
-					if(s(this).hasClass('active')[0]){
-						$scope.theatreMode(true);
-						s(this).removeClass('active');
-					} else {
-						$scope.theatreMode(false);
-						s(this).addClass('active');
-					}
-				});
-
-				//configure user
-
-				$scope.getUser();
-
-				//configure rating
-
-				s('.vid-info .thumb').on('click', function(e){
-					console.log('res');
-					if(s(this).hasClass('active')[0])
-						s(this).removeClass('active');
-					else{
-						s('.vid-info .thumb').removeClass('active');
-						s(this).addClass('active');
-					}
-				});
-
-
-				//configure comments
-
-				var loadedComments = true;
-
-				document.addEventListener('scroll', function(){
-					if(document.getElementsByTagName('body')[0].scrollTop > 240 && loadedComments){
-						getComments();
-
-
-						loadedComments = false;
-					}
-				});
-
-				//configure fullScreen Mode
-
-				s('.ytp-fullscreen-button').on('click', function(){
-					console.log('test');
-					if(!$rootScope.getCookie('fullScreenMode') || !$rootScope.getCookie('fullScreenMode') == 'false'){
-
-						$scope.fullScreen(true);
-					} else {
-						$scope.fullScreen(true);
-					}
-				});
-				
-			});
-
-		function setPublishAtDate(){
-			var date = new Date($scope.video.snippet.publishedAt);
-
-			var formattedDate = '';
-
-			switch(date.getMonth()){
-				case 0:
-					formattedDate = 'January';
-					break;
-				case 1:
-					formattedDate = 'February';
-					break;
-				case 2:
-					formattedDate = 'March';
-					break;
-				case 3:
-					formattedDate = 'April';
-					break;
-				case 4:
-					formattedDate = 'May';
-					break;
-				case 5:
-					formattedDate = 'June';
-					break;
-				case 6:
-					formattedDate = 'July';
-					break;
-				case 7:
-					formattedDate = 'August';
-					break;
-				case 8:
-					formattedDate = 'September';
-					break;
-				case 9:
-					formattedDate = 'October';
-					break;
-				case 10:
-					formattedDate = 'November';
-					break;
-				case 11:
-					formattedDate = 'December';
-					break;
 			}
+			
+		});
+	};
 
-			formattedDate = formattedDate + ' ' + date.getDate() + ', ' + date.getFullYear();
 
-			$scope.video.snippet.publishedAt = formattedDate;
-		}
+	vm.infoBox = function(){
+		s('.show-hide').on('click', function(){
+			if(s('.description').hasClass('full')[0]){
+				s('.description').removeClass('full');
+				s(this).innerHtml('Show More');
+			} else {
+				s('.description').addClass('full');
+				s(this).innerHtml('Hide');
+			}
+		});
 
-		function preserveDescription(){
-			var description = $scope.video.snippet.description;
 
-			description = preserveLinks(description);
+		var likes = Number(vm.video.statistics.likeCount);
+		var total = Number(vm.video.statistics.dislikeCount) + likes;
 
-			description = description.replace(/\n/g, "<br>");
+		likeRatio = likes / total * 100;
 
-			$scope.video.snippet.description = description;
-		}
+		s('.like-bar').css('width', String(likeRatio + '%'));
+	};
 
-		function preserveLinks(d){
-			d = d.replace( /(http:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
-			d = d.replace( /(https:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
 
-			return d;
-		}
+	vm.configComments = function(){
 
-		function numberWithCommas(x) {
-			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
+		var loadedComments = true;
 
-		function sideBar(){
-			$http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + $scope.settings.channel + '&key=' + $scope.settings.api_key)
+		document.addEventListener('scroll', function(){
+			if(document.getElementsByTagName('body')[0].scrollTop > 240 && loadedComments){
+				vm.getComments();
+
+
+				loadedComments = false;
+			}
+		});
+	};
+
+
+	vm.getComments =  function(){
+		vm.commentsLoading = true;
+		$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key)
 			.success(function(res){
-				$scope.channelId = res.items[0].id;
-				$scope.uploadPlaylist = res.items[0].contentDetails.relatedPlaylists.uploads;
+				vm.nextCommentPageToken = res.nextPageToken;
+				vm.comments = res.items;
+				vm.commentsLoading = false;
+			});
+	};
 
-				getVideos();
-				getNextVideo();
+
+	vm.getReplies = function(i){
+		vm.comments[i].repliesLoadingMore = true;
+
+		if(vm.comments[i].replies){
+			
+			if(vm.comments[i].replies.nextPageToken){
+				$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + vm.comments[i].id + '&order=relevance&maxResults=5&pageToken=' + vm.comments[i].replies.nextPageToken + '&key=' + $rootScope.settings.api_key)
+
+				.success(function(res){
+					console.log(res);
+					for(var j = 0; j < res.items.length; j++)
+						vm.comments[i].replies.items.push(res.items[j]);
+					vm.comments[i].replies.nextPageToken = res.nextPageToken;
+					console.log(vm.comments[i]);
+					vm.comments[i].repliesLoadingMore = false;
+				});
+			}
+		} else {
+			$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + vm.comments[i].id + '&order=relevance&maxResults=5&key=' + $rootScope.settings.api_key).
+
+			success(function(res){
+				vm.comments[i].replies = res;
+				console.log(vm.comments[i]);
+				vm.comments[i].repliesLoadingMore = false;
 			});
 		}
+	};
 
-		function getVideos(){
 
-			$scope.recentLoading = true;
-			
-			$http.get('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=' + $scope.uploadPlaylist +'&maxResults=5&key=' + $scope.settings.api_key)
-				.success(function(res){
-					$scope.recentVideos = [];
-					$scope.nextToken = res.nextPageToken;
+	vm.getMoreComments = function(){
+		vm.moreCommentsLoading = true;
+		console.log(vm.nextCommentPageToken);
+		$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&pageToken=' + vm.nextCommentPageToken + '&key=' + $rootScope.settings.api_key)
+			.success(function(res){
+				vm.nextCommentPageToken = res.nextPageToken;
+				for(var i = 0; i < res.items.length; i++)
+					vm.comments.push(res.items[i]);
 
-					for(var i = 0; i < res.items.length; i++){
-						$scope.recentVideos.push(res.items[i]);
-					}
 
-					
-					$scope.recentLoading = false;
-				});
-			
-		}
-
-		function checkShow(){
-			var title = $scope.video.snippet.title;
-
-			if(title.indexOf('Grumpcade') >= 0){
-				s('header').addClass('grumpcade');
-			} else if(title.indexOf('Steam Train') >= 0){
-				s('header').addClass('steam-train');
-			} else if(title.indexOf('Table Flip') >= 0){
-				s('header').addClass('table-flip');
-			} else {
-				s('header').removeClass();
-			}
-		}
-
-		function getNextVideo(){
-			$http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + $scope.settings.channelId + '&relatedToVideoId=' + $location.path().substr(8,$location.path().length - 1) +'&channelId=' + $scope.settings.channelId +'&maxResults=5&type=video&key=' + $scope.settings.api_key)
-
-				.success(function(res){
-					if(res.items[0].snippet.channelId == $scope.settings.channelId)
-						$scope.nextVideo = res.items[0];
-					$scope.relatedVideos = [];
-					for(var i = 1; i < res.items.length; i++){
-						if(res.items[i].snippet.channelId == $scope.settings.channelId)
-							$scope.relatedVideos.push(res.items[i]);
-					}
-					$scope.nextLoading = false;
-				});
-		}
-
-		function getComments(){
-			$scope.commentsLoading = true;
-			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key)
-				.success(function(res){
-					$scope.nextCommentPageToken = res.nextPageToken;
-					$scope.comments = res.items;
-
-					$scope.commentsLoading = false;
-				});
-		}
-
-		$scope.getReplies = function(i){
-			$scope.comments[i].repliesLoadingMore = true;
-
-			if($scope.comments[i].replies){
 				
-				if($scope.comments[i].replies.nextPageToken){
-					$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + $scope.comments[i].id + '&order=relevance&maxResults=5&pageToken=' + $scope.comments[i].replies.nextPageToken + '&key=' + $scope.settings.api_key)
+				vm.moreCommentsLoading = false;
+			});
+	};
 
-					.success(function(res){
-						console.log(res);
-						for(var j = 0; j < res.items.length; j++)
-							$scope.comments[i].replies.items.push(res.items[j]);
-						$scope.comments[i].replies.nextPageToken = res.nextPageToken;
-						console.log($scope.comments[i]);
-						$scope.comments[i].repliesLoadingMore = false;
-					});
-				}
+
+	vm.convertTime = function(time){
+		var now = new Date;
+		var time = new Date(time);
+
+		return time.getFullYear;
+	};
+
+
+	vm.theatreToggle = function(){
+		if(getCookie('gamegrumpsTheatreMode') === 'true'){
+			vm.theatreMode(false);
+			s('.theatre').addClass('active');
+		}
+
+		s('.theatre').on('click', function(e){
+			if(s(this).hasClass('active')[0]){
+				vm.theatreMode(true);
+				s(this).removeClass('active');
 			} else {
-				$http.get('https://www.googleapis.com/youtube/v3/comments?part=snippet&parentId=' + $scope.comments[i].id + '&order=relevance&maxResults=5&key=' + $scope.settings.api_key).
-
-				success(function(res){
-					$scope.comments[i].replies = res;
-					console.log($scope.comments[i]);
-					$scope.comments[i].repliesLoadingMore = false;
-				});
+				vm.theatreMode(false);
+				s(this).addClass('active');
 			}
-			
-		};
+		});
+	};
 
-		$scope.getMoreComments = function(){
-			$scope.moreCommentsLoading = true;
-			console.log($scope.nextCommentPageToken);
-			$http.get('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id + '&order=relevance&maxResults=5&pageToken=' + $scope.nextCommentPageToken + '&key=' + $scope.settings.api_key)
+
+	vm.theatreMode = function(b){
+		if(b){
+			setCookie('gamegrumpsTheatreMode', 'false', 2);
+			s('#player').css('width','854px');
+			s('#player').css('height','480px');
+			s('.right').removeClass('theatreDown');
+		} else {
+			setCookie('gamegrumpsTheatreMode', 'true', 2);
+			s('.right').addClass('theatreDown');
+			window.setTimeout(function(){
+				s('#player').css('width','1160px');
+				s('#player').css('height','652px');
+			},300);
+		}
+	};
+
+
+	vm.getUser = function(){
+		if($rootScope.isAuth()){
+			$http.get('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=' + $rootScope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'))
+
 				.success(function(res){
-					$scope.nextCommentPageToken = res.nextPageToken;
-					for(var i = 0; i < res.items.length; i++)
-						$scope.comments.push(res.items[i]);
-
-
-					
-					$scope.moreCommentsLoading = false;
+					vm.user = res.items[0];
+					console.log(res);
 				});
-		};
+		}
+	};
 
-		$scope.convertTime = function(time){
-			var now = new Date;
-			var time = new Date(time);
 
-			return time.getFullYear;
-		};
+	vm.configRating = function(){
+		s('.vid-info .thumb').on('click', function(e){
+			if(s(this).hasClass('active')[0])
+				s(this).removeClass('active');
+			else{
+				s('.vid-info .thumb').removeClass('active');
+				s(this).addClass('active');
+			}
+		});
+	};
 
-		$scope.theatreMode = function(b){
-			if(b){
-				setCookie('gamegrumpsTheatreMode', 'false', 2);
-				s('#player').css('width','854px');
-				s('#player').css('height','480px');
-				s('.right').removeClass('theatreDown');
+
+	var vidRated = false;
+
+	vm.rate = function(i){
+		$rootScope.checkAuth();
+
+		if($rootScope.isAuth()){
+
+			var rating;
+
+
+			if(vidRated){
+				rating = 'none';
+				vidRated = false;
 			} else {
-				setCookie('gamegrumpsTheatreMode', 'true', 2);
-				s('.right').addClass('theatreDown');
-				window.setTimeout(function(){
-					s('#player').css('width','1160px');
-					s('#player').css('height','652px');
-				},300);
-			}
-		};
-
-		$scope.getUser = function(){
-			if($rootScope.isAuth()){
-				$http.get('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'))
-
-					.success(function(res){
-						$scope.user = res.items[0];
-						console.log(res);
-					});
-			}
-		};
-
-		var vidRated = false;
-
-		$scope.rate = function(i){
-			$rootScope.checkAuth();
-
-			if($rootScope.isAuth()){
-
-				var rating;
-
-
-				if(vidRated){
-					rating = 'none';
-					vidRated = false;
-				} else {
-					if(i == 1){
-						rating = 'like';
-						vidRated = true;
-					}
-					else if(i == 0){
-						rating = 'dislike';
-						vidRated = true;
-					}
+				if(i == 1){
+					rating = 'like';
+					vidRated = true;
 				}
-
-				$http.post('https://www.googleapis.com/youtube/v3/videos/rate?id=' + video_id + '&rating=' + rating + '&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'));
+				else if(i == 0){
+					rating = 'dislike';
+					vidRated = true;
+				}
 			}
-		};
 
-		$scope.newComment = function(){
-			$rootScope.checkAuth();
+			$http.post('https://www.googleapis.com/youtube/v3/videos/rate?id=' + video_id + '&rating=' + rating + '&key=' + $rootScope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'));
+		}
+	};
 
-			if($rootScope.isAuth()){
-				
-				var data = {
-					"snippet": {
-						"videoId": video_id,
-						"channelId": $scope.user.channelId,
-						"topLevelComment": {
-							"snippet": {
-								textOriginal: $scope.postingComment
-							}
+
+
+	vm.newComment = function(){
+		$rootScope.checkAuth();
+
+		if($rootScope.isAuth()){
+			
+			var data = {
+				"snippet": {
+					"videoId": video_id,
+					"channelId": vm.user.channelId,
+					"topLevelComment": {
+						"snippet": {
+							textOriginal: vm.postingComment
 						}
 					}
 				}
-
-				data.snippet.topLevelComment.snippet.textDisplay = data.snippet.topLevelComment.snippet.textOriginal;
-				console.log(data);
-				$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id +'&key=' + $scope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), data)
-
-					.success(function(res){
-						if(!$scope.comments)
-							getComments();
-						$scope.comments.unshift(res);
-						console.log($scope.comments);
-						$scope.postingComment = '';
-					});
-
-
 			}
-		};
 
-		$scope.newReply = function(p){
-			$scope.checkAuth();
+			data.snippet.topLevelComment.snippet.textDisplay = data.snippet.topLevelComment.snippet.textOriginal;
+			console.log(data);
+			$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=' + video_id +'&key=' + $rootScope.settings.api_key + '&access_token=' + $rootScope.getCookie('ggAuthentication'), data)
 
-			if($rootScope.isAuth()){
-				var snippet = {};
+				.success(function(res){
+					if(!$scope.comments)
+						getComments();
+					$scope.comments.unshift(res);
+					$scope.postingComment = '';
+				});
 
-				snippet.textOriginal = $scope.postingReply;
-				snippet.parentId = p;
 
-				
-			}
-		};
-
-		$scope.fullScreen = function(d){
-			if(d){
-				$rootScope.setCookie('fullscreenMode','true');
-			} else {
-				$rootScope.setCookie('fullscreenMode','false');
-			}
-		};
-
-	})
-
-	.filter('unsafe', function($sce) {
-
-		return function(val) {
-
-			return $sce.trustAsHtml(val);
-
-		};
-
-	});
-
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+d.toUTCString();
-		document.cookie = cname + "=" + cvalue + "; " + expires;
-	}
-
-	function getCookie(cname) {
-		var name = cname + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0; i<ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1);
-			if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
 		}
-		return false;
+	};
+
+	/*
+		Haven't gotten around to getting this to work yet
+	*/
+	vm.newReply = function(p){
+		$rootScope.checkAuth();
+
+		if($rootScope.isAuth()){
+			var snippet = {};
+
+			snippet.textOriginal = $scope.postingReply;
+			snippet.parentId = p;
+
+			
+		}
+	};
+
+	/*
+		Fullscreen current working as stated in a comment above
+	*/
+	vm.configFullscreen = function(){
+		/*
+		this currently isn't working but is supposed to 
+		keep the user in fullscreen mode even when 
+		the video autoplays
+		*/
+		s('.ytp-fullscreen-button').on('click', function(){
+			
+			if(!$rootScope.getCookie('fullScreenMode') || !$rootScope.getCookie('fullScreenMode') == 'false'){
+				vm.fullScreen(true);
+			} else {
+				vm.fullScreen(true);
+			}
+		});
 	}
+
+	vm.fullScreen = function(d){
+		if(d){
+			$rootScope.setCookie('fullscreenMode','true');
+		} else {
+			$rootScope.setCookie('fullscreenMode','false');
+		}
+	};
+}
+
+//Function for Filter 'Unsafe'
+function unsafeFilter($sce){
+	return function(val) {
+
+		return $sce.trustAsHtml(val);
+
+	};
+}
+
+
+
+function setCookie(cname, cvalue, exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+d.toUTCString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1);
+		if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+	}
+	return false;
+}
+
+})();
 

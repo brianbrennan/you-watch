@@ -226,6 +226,7 @@ header {
   width: 21.7391304348%;
   float: left;
   margin-right: 4.347826087%;
+  display: block;
   float: right;
   margin-right: 0;
   -webkit-transition: 0.3s;
